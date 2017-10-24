@@ -8,30 +8,36 @@
 
 import UIKit
 
+protocol DataTextChangeDelegate {
+    func didTextChangedInArray(atIndex: Int)
+}
+
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
     var timer = Timer()
+    var textChangeDelegate: DataTextChangeDelegate!
     var textObjects: [DataTextModel] = {
         let textA = DataText(text: "some textA")
         let textB = DataText(text: "Nulla rutrum bibendum est sodales tincidunt. Donec mattis quam non metus convallis sodales. Fusce commodo tincidunt vestibulum. In hac habitasse platea dictumst. Praesent et sem sed magna fringilla dapibus. Nullam dictum lacus rhoncus nibh vulputate, id sodales tortor mollis")
         let textC = DataText(text: "asjkdla dkajsld aksdj a")
+        //let textD = DataText(text: "a")
         
         return [DataTextModel(dataText: textA), DataTextModel(dataText: textB), DataTextModel(dataText: textC)]
     }()
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
-        
-        timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(updateCounting), userInfo: nil, repeats: true)
+
+        timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(someRandomAction), userInfo: nil, repeats: true)
         return true
     }
     
-    @objc func updateCounting() {
-        let randomText = randomString(length: 99)
-        textObjects[1] = DataTextModel(dataText: DataText(text: randomText))
-        print("randomText generated: " + randomText)
+    @objc func someRandomAction() {
+        let randomText = randomString(length: Int(arc4random()%99 + 20))
+        let someIndex = Int(arc4random() % 3)
+        textObjects[someIndex] = DataTextModel(dataText: DataText(text: randomText))
+        textChangeDelegate.didTextChangedInArray(atIndex: someIndex)
     }
     
     func randomString(length: Int) -> String {

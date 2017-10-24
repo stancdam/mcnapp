@@ -10,12 +10,15 @@ import UIKit
 
 class ViewController: UITableViewController {
     
-    let textObjects: [DataTextModel] = (UIApplication.shared.delegate as! AppDelegate).textObjects
+    var textObjects: [DataTextModel] = (UIApplication.shared.delegate as! AppDelegate).textObjects
+    let appDelegate = UIApplication.shared.delegate as! AppDelegate
     let cellId = "Cell"
     
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.tableFooterView = UIView()
+        appDelegate.textChangeDelegate = self
+        
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -31,10 +34,20 @@ class ViewController: UITableViewController {
         
         return cell
     }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        // TODO
-    }
+}
 
+extension ViewController: DataTextChangeDelegate {
+    func didTextChangedInArray(atIndex: Int) {
+
+        textObjects = (UIApplication.shared.delegate as! AppDelegate).textObjects
+        let dataTextViewModel = textObjects[atIndex]
+        
+        let indexPath = IndexPath(item: atIndex, section: 0)
+        let cell = tableView.cellForRow(at: indexPath)  as! DataTextViewCell
+        cell.dataTextView.text = dataTextViewModel.storedText
+        
+        tableView.reloadData()
+        print("... " + dataTextViewModel.storedText!)
+    }
 }
 
