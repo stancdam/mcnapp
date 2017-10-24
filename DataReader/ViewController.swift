@@ -8,11 +8,15 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class ViewController: UITableViewController {
+    
+    let textObjects: [DataTextModel] = (UIApplication.shared.delegate as! AppDelegate).textObjects
+    let cellId = "Cell"
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
+        tableView.tableFooterView = UIView()
     }
 
     override func didReceiveMemoryWarning() {
@@ -20,6 +24,23 @@ class ViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
 
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return textObjects.count
+    }
+    
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: cellId) as! DataTextViewCell
+        let dataTextViewModel = textObjects[indexPath.row]
+        
+        cell.dataTextView.text = dataTextViewModel.storedText
+        cell.dataTextId.text = String(indexPath.row)
+        
+        return cell
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        // TODO
+    }
 
 }
 
