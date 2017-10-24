@@ -13,15 +13,9 @@ class ViewController: UITableViewController {
     let textObjects: [DataTextModel] = (UIApplication.shared.delegate as! AppDelegate).textObjects
     let cellId = "Cell"
     
-
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.tableFooterView = UIView()
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
