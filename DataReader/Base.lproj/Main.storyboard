@@ -24,40 +24,37 @@
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="60"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="0" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="ySy-8H-pY1">
-                                            <rect key="frame" x="8" y="0.0" width="359" height="26"/>
+                                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="0" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="ITE-OF-Ska">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="22"/>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <constraints>
-                                                <constraint firstAttribute="height" constant="26" id="yVR-Fd-Hws"/>
+                                                <constraint firstAttribute="height" constant="22" id="QvJ-hh-uHD"/>
                                             </constraints>
-                                            <color key="textColor" red="0.0" green="0.35566986243183152" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                            <color key="textColor" red="0.0" green="0.40539319630230031" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                             <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                         </textView>
-                                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" text="textView" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="2OA-3Z-fEZ">
-                                            <rect key="frame" x="8" y="28" width="359" height="32"/>
+                                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="usF-Av-jSC">
+                                            <rect key="frame" x="0.0" y="22" width="375" height="38"/>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                             <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                         </textView>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstItem="ySy-8H-pY1" firstAttribute="top" secondItem="hc4-IU-4wu" secondAttribute="top" id="IV4-gf-Aoq"/>
-                                        <constraint firstItem="2OA-3Z-fEZ" firstAttribute="leading" secondItem="ySy-8H-pY1" secondAttribute="trailing" constant="-359" id="O92-Q1-Yzw"/>
-                                        <constraint firstItem="ySy-8H-pY1" firstAttribute="trailing" secondItem="2OA-3Z-fEZ" secondAttribute="trailing" id="Odm-9v-kvy"/>
-                                        <constraint firstAttribute="bottom" secondItem="2OA-3Z-fEZ" secondAttribute="bottom" id="SIN-4U-Q2O"/>
-                                        <constraint firstAttribute="trailing" secondItem="2OA-3Z-fEZ" secondAttribute="trailing" constant="8" id="ZHF-k5-6hP"/>
-                                        <constraint firstItem="2OA-3Z-fEZ" firstAttribute="leading" secondItem="hc4-IU-4wu" secondAttribute="leading" constant="8" id="fZN-Ll-eG1"/>
-                                        <constraint firstItem="2OA-3Z-fEZ" firstAttribute="top" secondItem="hc4-IU-4wu" secondAttribute="top" constant="28" id="fyA-bd-gJq"/>
-                                        <constraint firstItem="2OA-3Z-fEZ" firstAttribute="top" secondItem="ySy-8H-pY1" secondAttribute="bottom" constant="2" id="l8y-uF-YX2"/>
-                                        <constraint firstItem="ySy-8H-pY1" firstAttribute="leading" secondItem="2OA-3Z-fEZ" secondAttribute="leading" id="veW-6W-WCb"/>
-                                        <constraint firstItem="2OA-3Z-fEZ" firstAttribute="top" secondItem="ySy-8H-pY1" secondAttribute="bottom" constant="2" id="yF4-8i-qcq"/>
+                                        <constraint firstItem="ITE-OF-Ska" firstAttribute="top" secondItem="hc4-IU-4wu" secondAttribute="top" id="3ge-97-oM2"/>
+                                        <constraint firstAttribute="trailing" secondItem="usF-Av-jSC" secondAttribute="trailing" id="A71-AJ-El8"/>
+                                        <constraint firstItem="ITE-OF-Ska" firstAttribute="leading" secondItem="hc4-IU-4wu" secondAttribute="leading" id="hLp-6e-GeK"/>
+                                        <constraint firstAttribute="bottom" secondItem="usF-Av-jSC" secondAttribute="bottom" id="l4s-KN-Adt"/>
+                                        <constraint firstAttribute="trailing" secondItem="ITE-OF-Ska" secondAttribute="trailing" id="ncA-WL-r8Y"/>
+                                        <constraint firstItem="usF-Av-jSC" firstAttribute="leading" secondItem="hc4-IU-4wu" secondAttribute="leading" id="pWl-w9-isB"/>
+                                        <constraint firstItem="usF-Av-jSC" firstAttribute="top" secondItem="ITE-OF-Ska" secondAttribute="bottom" id="rFf-rM-cks"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>
-                                    <outlet property="dataTextId" destination="ySy-8H-pY1" id="78o-xi-gaT"/>
-                                    <outlet property="dataTextView" destination="2OA-3Z-fEZ" id="GTR-qI-SmT"/>
-                                    <outlet property="textLabel" destination="2OA-3Z-fEZ" id="PX6-Z3-OtR"/>
+                                    <outlet property="dataTextId" destination="ITE-OF-Ska" id="oxq-Md-QdR"/>
+                                    <outlet property="dataTextView" destination="usF-Av-jSC" id="QaQ-sV-kmK"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>

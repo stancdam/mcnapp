@@ -46,8 +46,11 @@ extension ViewController: DataTextChangeDelegate {
         let cell = tableView.cellForRow(at: indexPath)  as! DataTextViewCell
         cell.dataTextView.text = dataTextViewModel.storedText
         
-        tableView.reloadData()
-        print("... " + dataTextViewModel.storedText!)
+        tableView.beginUpdates()
+        tableView.reloadRows(at: [indexPath], with: .automatic)
+        tableView.endUpdates()
+        
+        print("\(atIndex) :::" + dataTextViewModel.storedText!)
     }
 }
 
