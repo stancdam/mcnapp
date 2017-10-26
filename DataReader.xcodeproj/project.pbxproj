@@ -14,8 +14,9 @@
 		63F5BC4C1F9E7A64005D3BAD /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 63F5BC4A1F9E7A64005D3BAD /* LaunchScreen.storyboard */; };
 		63F5BC571F9E7A64005D3BAD /* DataReaderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63F5BC561F9E7A64005D3BAD /* DataReaderTests.swift */; };
 		63F5BC621F9E7A64005D3BAD /* DataReaderUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63F5BC611F9E7A64005D3BAD /* DataReaderUITests.swift */; };
-		63F5BCF01F9F992D005D3BAD /* DataText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63F5BCEF1F9F992D005D3BAD /* DataText.swift */; };
 		63F5BCF21F9FB47E005D3BAD /* DataTextViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63F5BCF11F9FB47E005D3BAD /* DataTextViewCell.swift */; };
+		63F5BCF51FA2731C005D3BAD /* String+RandomWord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63F5BCF41FA2731C005D3BAD /* String+RandomWord.swift */; };
+		63F5BCF81FA27724005D3BAD /* Array+DataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63F5BCF71FA27724005D3BAD /* Array+DataModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,8 +50,9 @@
 		63F5BC5D1F9E7A64005D3BAD /* DataReaderUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DataReaderUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		63F5BC611F9E7A64005D3BAD /* DataReaderUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataReaderUITests.swift; sourceTree = "<group>"; };
 		63F5BC631F9E7A64005D3BAD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		63F5BCEF1F9F992D005D3BAD /* DataText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataText.swift; sourceTree = "<group>"; };
 		63F5BCF11F9FB47E005D3BAD /* DataTextViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataTextViewCell.swift; sourceTree = "<group>"; };
+		63F5BCF41FA2731C005D3BAD /* String+RandomWord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+RandomWord.swift"; sourceTree = "<group>"; };
+		63F5BCF71FA27724005D3BAD /* Array+DataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+DataModel.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -101,9 +103,9 @@
 		63F5BC401F9E7A64005D3BAD /* DataReader */ = {
 			isa = PBXGroup;
 			children = (
+				63F5BCF31FA27286005D3BAD /* Extensions */,
 				63F5BC411F9E7A64005D3BAD /* AppDelegate.swift */,
 				63F5BC431F9E7A64005D3BAD /* ViewController.swift */,
-				63F5BCEF1F9F992D005D3BAD /* DataText.swift */,
 				63F5BCF11F9FB47E005D3BAD /* DataTextViewCell.swift */,
 				63F5BC451F9E7A64005D3BAD /* Main.storyboard */,
 				63F5BC481F9E7A64005D3BAD /* Assets.xcassets */,
@@ -129,6 +131,15 @@
 				63F5BC631F9E7A64005D3BAD /* Info.plist */,
 			);
 			path = DataReaderUITests;
+			sourceTree = "<group>";
+		};
+		63F5BCF31FA27286005D3BAD /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				63F5BCF41FA2731C005D3BAD /* String+RandomWord.swift */,
+				63F5BCF71FA27724005D3BAD /* Array+DataModel.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -267,8 +278,9 @@
 			files = (
 				63F5BC441F9E7A64005D3BAD /* ViewController.swift in Sources */,
 				63F5BC421F9E7A64005D3BAD /* AppDelegate.swift in Sources */,
-				63F5BCF01F9F992D005D3BAD /* DataText.swift in Sources */,
+				63F5BCF51FA2731C005D3BAD /* String+RandomWord.swift in Sources */,
 				63F5BCF21F9FB47E005D3BAD /* DataTextViewCell.swift in Sources */,
+				63F5BCF81FA27724005D3BAD /* Array+DataModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

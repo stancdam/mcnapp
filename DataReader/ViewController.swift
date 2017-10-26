@@ -6,19 +6,21 @@
 //  Copyright © 2017 haze. All rights reserved.
 //
 
+let numOfCells = 10
+
 import UIKit
 
 class ViewController: UITableViewController {
     
-    var textObjects: [DataTextModel] = (UIApplication.shared.delegate as! AppDelegate).textObjects
+    var textObjects = Array.createDataModel(size: numOfCells)
     let appDelegate = UIApplication.shared.delegate as! AppDelegate
     let cellId = "Cell"
+    var timer = Timer()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.tableFooterView = UIView()
-        appDelegate.textChangeDelegate = self
-        
+        timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(updateRandomCell), userInfo: nil, repeats: true)
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -26,31 +28,29 @@ class ViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: cellId) as! DataTextViewCell
-        let dataTextViewModel = textObjects[indexPath.row]
+        let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath)
         
-        cell.dataTextView.text = dataTextViewModel.storedText
-        cell.dataTextId.text = String(indexPath.row)
-        
+        if let dynamicCell = cell as? DataTextViewCell {
+            dynamicCell.dataTextView.text = textObjects[indexPath.row]
+            dynamicCell.dataTextId.text = String(indexPath.row)
+        }
+
         return cell
     }
-}
 
-extension ViewController: DataTextChangeDelegate {
-    func didTextChangedInArray(atIndex: Int) {
-
-        textObjects = (UIApplication.shared.delegate as! AppDelegate).textObjects
-        let dataTextViewModel = textObjects[atIndex]
+    @objc func updateRandomCell() {
+        let randomRow = Int(arc4random_uniform(UInt32(textObjects.count)))
         
-        let indexPath = IndexPath(item: atIndex, section: 0)
-        let cell = tableView.cellForRow(at: indexPath)  as! DataTextViewCell
-        cell.dataTextView.text = dataTextViewModel.storedText
+        guard let cell = tableView.cellForRow(at: IndexPath(item: randomRow, section: 0)) as? DataTextViewCell else {
+            return
+        }
+        
+        textObjects[randomRow] = String.randomSentence()
+        
+        print("\(randomRow): " + textObjects[randomRow])
         
         tableView.beginUpdates()
-        tableView.reloadRows(at: [indexPath], with: .automatic)
+        cell.dataTextView.text = textObjects[randomRow]
         tableView.endUpdates()
-        
-        print("\(atIndex) :::" + dataTextViewModel.storedText!)
     }
 }
-

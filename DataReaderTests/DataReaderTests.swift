@@ -21,14 +21,6 @@ class DataReaderTests: XCTestCase {
         super.tearDown()
     }
     
-    func testDataTextModel() {
-        let dataText = DataText(text: "simple test")
-        let dataTextModel = DataTextModel(dataText: dataText)
-        
-        XCTAssertEqual(dataTextModel.storedText, "simple test")
-        
-    }
-    
     func testExample() {
         // This is an example of a functional test case.
         // Use XCTAssert and related functions to verify your tests produce the correct results.
