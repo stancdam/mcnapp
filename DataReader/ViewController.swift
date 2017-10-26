@@ -47,8 +47,6 @@ class ViewController: UITableViewController {
         
         textObjects[randomRow] = String.randomSentence()
         
-        print("\(randomRow): " + textObjects[randomRow])
-        
         tableView.beginUpdates()
         cell.dataTextView.text = textObjects[randomRow]
         tableView.endUpdates()

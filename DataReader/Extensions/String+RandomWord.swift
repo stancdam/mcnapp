@@ -10,13 +10,13 @@ import Foundation
 
 extension String {
     
-    static func randomWordAbout(length: Int) -> String {
+    static func randomWord() -> String {
         let letters : NSString = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
-        let len = UInt32(letters.length)
+        let randLength = arc4random_uniform(9)+1
         var randomWord = ""
         
-        for _ in 0 ..< length {
-            let rand = arc4random_uniform(len)
+        for _ in 0 ..< randLength {
+            let rand = arc4random_uniform(UInt32(letters.length))
             var nextChar = letters.character(at: Int(rand))
             randomWord += NSString(characters: &nextChar, length: 1) as String
         }
@@ -25,14 +25,11 @@ extension String {
     }
     
     static func randomSentence() -> String {
-        let randLimit : UInt32 = 11
-        let rand = arc4random_uniform(randLimit)
+        let rand = arc4random_uniform(9)+1
         var randomSentence = ""
         
-        // rand+1 - for at least 1 word in sentence
-        for _ in 0 ..< rand+1 {
-            let randWordLength = arc4random_uniform(randLimit)
-            randomSentence += randomWordAbout(length: Int(randWordLength)) + " "
+        for _ in 0 ..< rand {
+            randomSentence += randomWord() + " "
         }
         
         return randomSentence
