@@ -13,9 +13,8 @@ import UIKit
 class ViewController: UITableViewController {
     
     var textObjects = Array.createDataModel(size: numOfCells)
-    let appDelegate = UIApplication.shared.delegate as! AppDelegate
     let cellId = "Cell"
-    var timer = Timer()
+    var timer: Timer?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -36,6 +35,12 @@ class ViewController: UITableViewController {
         }
 
         return cell
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        timer?.invalidate()
+        timer = nil
     }
 
     @objc func updateRandomCell() {

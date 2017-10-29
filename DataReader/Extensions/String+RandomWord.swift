@@ -12,9 +12,9 @@ extension String {
     
     static func randomWord() -> String {
         let letters : NSString = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
-        let randLength = arc4random_uniform(9)+1
+        let randLength = arc4random_uniform(10)+1
         var randomWord = ""
-        
+
         for _ in 0 ..< randLength {
             let rand = arc4random_uniform(UInt32(letters.length))
             var nextChar = letters.character(at: Int(rand))
@@ -25,7 +25,7 @@ extension String {
     }
     
     static func randomSentence() -> String {
-        let rand = arc4random_uniform(9)+1
+        let rand = arc4random_uniform(11)
         var randomSentence = ""
         
         for _ in 0 ..< rand {
