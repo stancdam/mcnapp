@@ -19,7 +19,16 @@ class ViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.tableFooterView = UIView()
-        timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(updateRandomCell), userInfo: nil, repeats: true)
+        
+        let notificationCenter = NotificationCenter.default
+        notificationCenter.addObserver(self,
+                                       selector: #selector(didEnterBackground),
+                                       name: NSNotification.Name.UIApplicationWillResignActive,
+                                       object: nil)
+        notificationCenter.addObserver(self,
+                                       selector: #selector(didBecomeActive),
+                                       name: NSNotification.Name.UIApplicationDidBecomeActive,
+                                       object: nil)
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -37,10 +46,21 @@ class ViewController: UITableViewController {
         return cell
     }
     
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
+    func startTimer() {
+        timer = Timer.scheduledTimer(timeInterval: 1,
+                                     target: self,
+                                     selector: #selector(updateRandomCell),
+                                     userInfo: nil,
+                                     repeats: true)
+    }
+    
+    @objc func didEnterBackground() {
         timer?.invalidate()
         timer = nil
+    }
+
+    @objc func didBecomeActive() {
+        startTimer()
     }
 
     @objc func updateRandomCell() {
