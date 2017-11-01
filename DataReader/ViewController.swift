@@ -14,8 +14,9 @@ class ViewController: UIViewController, UITableViewDataSource {
     
     @IBOutlet weak var tableView: UITableView!
     
-    fileprivate var textObjects: [String] = []
-    let cellId = "Cell"
+    private var textObjects = [String]()
+    private let reuseCellId = "Cell"
+    
     var timer: Timer?
     
     convenience init(dataModel: [String]) {
@@ -25,8 +26,8 @@ class ViewController: UIViewController, UITableViewDataSource {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-//        tableView.tableFooterView = UIView()
-//
+        tableView.tableFooterView = UIView()
+
 //        enableDataChangeFeature()
     }
 
@@ -35,16 +36,15 @@ class ViewController: UIViewController, UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-//        let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath)
-//
-//        if let dynamicCell = cell as? DataTextViewCell {
-//            dynamicCell.dataTextView.text = textObjects[indexPath.row]
-//            dynamicCell.dataTextId.text = String(indexPath.row)
-//        }
-//
-//        return cell
-        let cell = UITableViewCell()
+        let cell = dequeueCell(in: tableView)
         cell.textLabel?.text = textObjects[indexPath.row]
         return cell
+    }
+    
+    private func dequeueCell(in tableView: UITableView) ->UITableViewCell {
+        if let cell = tableView.dequeueReusableCell(withIdentifier: reuseCellId) {
+            return cell
+        }
+        return UITableViewCell(style: .default, reuseIdentifier: reuseCellId)
     }
 }

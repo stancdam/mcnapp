@@ -12,30 +12,33 @@ import XCTest
 
 class ViewControllerTest: XCTestCase {
     
-    func test_viewDidLoad_withNoData_renderZeroRows() {
-        let sut = ViewController(dataModel: [])
-        
-        _ = sut.view
-        
-        XCTAssertEqual(sut.tableView.numberOfRows(inSection: 0), 0)
+    func test_viewDidLoad_renderRows() {
+        XCTAssertEqual(makeSUT(dataModel: []).tableView.numberOfRows(inSection: 0), 0)
+        XCTAssertEqual(makeSUT(dataModel: ["T1"]).tableView.numberOfRows(inSection: 0), 1)
+        XCTAssertEqual(makeSUT(dataModel: ["T1", "T2"]).tableView.numberOfRows(inSection: 0), 2)
     }
     
-    func test_viewDidLoad_withOneData_renderOneRows() {
-        let sut = ViewController(dataModel: ["Text1"])
-        
-        _ = sut.view
-        
-        XCTAssertEqual(sut.tableView.numberOfRows(inSection: 0), 1)
+    func test_viewDidLoad_renderRowsText() {
+        XCTAssertEqual(makeSUT(dataModel: ["T1", "T2"]).tableView.text(at: 0), "T1")
+        XCTAssertEqual(makeSUT(dataModel: ["T1", "T2"]).tableView.text(at: 1), "T2")
     }
     
-    func test_viewDidLoad_withOneData_renderOneRowsWithText() {
-        let sut = ViewController(dataModel: ["Text1"])
-        
+    // MARK: Helpers
+    
+    func makeSUT(dataModel: [String]) -> ViewController {
+        let sut = ViewController(dataModel: dataModel)
         _ = sut.view
-        
-        let indexPath = IndexPath(row: 0, section: 0)
-        let cell = sut.tableView.dataSource?.tableView(sut.tableView, cellForRowAt: indexPath)
-        
-        XCTAssertEqual(cell?.textLabel?.text, "Text1")
+        return sut
+    }
+}
+
+private extension UITableView {
+    func cell(at row: Int) -> UITableViewCell? {
+        let indexPath = IndexPath(row: row, section: 0)
+        return dataSource?.tableView(self, cellForRowAt: indexPath)
+    }
+    
+    func text(at row: Int) -> String? {
+        return cell(at: row)?.textLabel?.text
     }
 }
