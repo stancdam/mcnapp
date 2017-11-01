@@ -39,6 +39,10 @@ private extension UITableView {
     }
     
     func text(at row: Int) -> String? {
-        return cell(at: row)?.textLabel?.text
+        var text: String?
+        if let dynamicCell = cell(at: row) as? DynamicCell {
+            text = dynamicCell.textView.text
+        }
+        return text
     }
 }

@@ -36,17 +36,17 @@ extension ViewController {
     }
     
     @objc func updateRandomCell() {
-//        let randomRow = Int(arc4random_uniform(UInt32(tableView.numberOfSections)))
-//        
-//        guard let cell = tableView.cellForRow(at: IndexPath(item: randomRow, section: 0)) as? DataTextViewCell else {
-//            return
-//        }
-//        
-//        textObjects[randomRow] = String.randomSentence()
-//        
-//        tableView.beginUpdates()
-//        cell.dataTextView.text = textObjects[randomRow]
-//        tableView.endUpdates()
+        let randomRow = Int(arc4random_uniform(UInt32(textObjectSize())))
+        
+        guard let cell = tableView.cellForRow(at: IndexPath(item: randomRow, section: 0)) as? DynamicCell else {
+            return
+        }
+        
+        textObjects[randomRow] = String.randomSentence()
+        
+        tableView.beginUpdates()
+        cell.textView.text = textObjects[randomRow]
+        tableView.endUpdates()
     }
 }
 

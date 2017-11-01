@@ -14,8 +14,9 @@ class ViewController: UIViewController, UITableViewDataSource {
     
     @IBOutlet weak var tableView: UITableView!
     
-    private var textObjects = [String]()
-    private let reuseCellId = "Cell"
+    // TODO: this should be private, its not because of the VC+DataChange extension
+    var textObjects = [String]()
+    private let reuseCellId = "DynamicCell"
     
     var timer: Timer?
     
@@ -24,11 +25,16 @@ class ViewController: UIViewController, UITableViewDataSource {
         self.textObjects = dataModel
     }
     
+    internal func textObjectSize() -> Int {
+        return textObjects.count
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        tableView.register(UINib(nibName: "DynamicCell", bundle: nil), forCellReuseIdentifier: reuseCellId)
         tableView.tableFooterView = UIView()
 
-//        enableDataChangeFeature()
+        enableDataChangeFeature()
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -36,15 +42,13 @@ class ViewController: UIViewController, UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = dequeueCell(in: tableView)
-        cell.textLabel?.text = textObjects[indexPath.row]
-        return cell
-    }
-    
-    private func dequeueCell(in tableView: UITableView) ->UITableViewCell {
-        if let cell = tableView.dequeueReusableCell(withIdentifier: reuseCellId) {
-            return cell
+        let cell = tableView.dequeueReusableCell(withIdentifier: reuseCellId, for: indexPath)
+        
+        if let dynamicCell = cell as? DynamicCell {
+            dynamicCell.textView.text = textObjects[indexPath.row]
+            dynamicCell.idCell.text = String(indexPath.row)
         }
-        return UITableViewCell(style: .default, reuseIdentifier: reuseCellId)
+        
+        return cell
     }
 }
