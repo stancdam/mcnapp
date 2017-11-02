@@ -28,13 +28,6 @@
 			remoteGlobalIDString = 63F5BC3D1F9E7A64005D3BAD;
 			remoteInfo = DataReader;
 		};
-		63F5BC5E1F9E7A64005D3BAD /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 63F5BC361F9E7A64005D3BAD /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 63F5BC3D1F9E7A64005D3BAD;
-			remoteInfo = DataReader;
-		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
@@ -51,8 +44,6 @@
 		63F5BC4D1F9E7A64005D3BAD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		63F5BC521F9E7A64005D3BAD /* DataReaderTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DataReaderTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		63F5BC581F9E7A64005D3BAD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		63F5BC5D1F9E7A64005D3BAD /* DataReaderUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DataReaderUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		63F5BC631F9E7A64005D3BAD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		63F5BCF41FA2731C005D3BAD /* String+RandomWord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+RandomWord.swift"; sourceTree = "<group>"; };
 		63F5BCF71FA27724005D3BAD /* Array+DataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+DataModel.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -72,22 +63,42 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		63F5BC5A1F9E7A64005D3BAD /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		6333564F1FABAA110052CA59 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				63F5BC431F9E7A64005D3BAD /* ViewController.swift */,
+				633356411FA9E1290052CA59 /* ViewController.xib */,
+				6333563D1FA9D5570052CA59 /* ViewController+DataChange.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		633356501FABAA220052CA59 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				63F5BC481F9E7A64005D3BAD /* Assets.xcassets */,
+				63F5BC4A1F9E7A64005D3BAD /* LaunchScreen.storyboard */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		633356511FABAA2F0052CA59 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				633356431FAA089A0052CA59 /* DynamicCell.swift */,
+				633356441FAA089A0052CA59 /* DynamicCell.xib */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
 		63F5BC351F9E7A64005D3BAD = {
 			isa = PBXGroup;
 			children = (
 				63F5BC401F9E7A64005D3BAD /* DataReader */,
 				63F5BC551F9E7A64005D3BAD /* DataReaderTests */,
-				63F5BC601F9E7A64005D3BAD /* DataReaderUITests */,
 				63F5BC3F1F9E7A64005D3BAD /* Products */,
 			);
 			sourceTree = "<group>";
@@ -97,7 +108,6 @@
 			children = (
 				63F5BC3E1F9E7A64005D3BAD /* DataReader.app */,
 				63F5BC521F9E7A64005D3BAD /* DataReaderTests.xctest */,
-				63F5BC5D1F9E7A64005D3BAD /* DataReaderUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -106,14 +116,10 @@
 			isa = PBXGroup;
 			children = (
 				63F5BCF31FA27286005D3BAD /* Extensions */,
+				633356511FABAA2F0052CA59 /* View */,
+				6333564F1FABAA110052CA59 /* Controller */,
+				633356501FABAA220052CA59 /* Resources */,
 				63F5BC411F9E7A64005D3BAD /* AppDelegate.swift */,
-				63F5BC431F9E7A64005D3BAD /* ViewController.swift */,
-				633356411FA9E1290052CA59 /* ViewController.xib */,
-				633356431FAA089A0052CA59 /* DynamicCell.swift */,
-				633356441FAA089A0052CA59 /* DynamicCell.xib */,
-				6333563D1FA9D5570052CA59 /* ViewController+DataChange.swift */,
-				63F5BC481F9E7A64005D3BAD /* Assets.xcassets */,
-				63F5BC4A1F9E7A64005D3BAD /* LaunchScreen.storyboard */,
 				63F5BC4D1F9E7A64005D3BAD /* Info.plist */,
 			);
 			path = DataReader;
@@ -126,14 +132,6 @@
 				63F5BC581F9E7A64005D3BAD /* Info.plist */,
 			);
 			path = DataReaderTests;
-			sourceTree = "<group>";
-		};
-		63F5BC601F9E7A64005D3BAD /* DataReaderUITests */ = {
-			isa = PBXGroup;
-			children = (
-				63F5BC631F9E7A64005D3BAD /* Info.plist */,
-			);
-			path = DataReaderUITests;
 			sourceTree = "<group>";
 		};
 		63F5BCF31FA27286005D3BAD /* Extensions */ = {
@@ -183,24 +181,6 @@
 			productReference = 63F5BC521F9E7A64005D3BAD /* DataReaderTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		63F5BC5C1F9E7A64005D3BAD /* DataReaderUITests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 63F5BC6C1F9E7A64005D3BAD /* Build configuration list for PBXNativeTarget "DataReaderUITests" */;
-			buildPhases = (
-				63F5BC591F9E7A64005D3BAD /* Sources */,
-				63F5BC5A1F9E7A64005D3BAD /* Frameworks */,
-				63F5BC5B1F9E7A64005D3BAD /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				63F5BC5F1F9E7A64005D3BAD /* PBXTargetDependency */,
-			);
-			name = DataReaderUITests;
-			productName = DataReaderUITests;
-			productReference = 63F5BC5D1F9E7A64005D3BAD /* DataReaderUITests.xctest */;
-			productType = "com.apple.product-type.bundle.ui-testing";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -216,11 +196,6 @@
 						ProvisioningStyle = Automatic;
 					};
 					63F5BC511F9E7A64005D3BAD = {
-						CreatedOnToolsVersion = 9.0;
-						ProvisioningStyle = Automatic;
-						TestTargetID = 63F5BC3D1F9E7A64005D3BAD;
-					};
-					63F5BC5C1F9E7A64005D3BAD = {
 						CreatedOnToolsVersion = 9.0;
 						ProvisioningStyle = Automatic;
 						TestTargetID = 63F5BC3D1F9E7A64005D3BAD;
@@ -242,7 +217,6 @@
 			targets = (
 				63F5BC3D1F9E7A64005D3BAD /* DataReader */,
 				63F5BC511F9E7A64005D3BAD /* DataReaderTests */,
-				63F5BC5C1F9E7A64005D3BAD /* DataReaderUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -260,13 +234,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		63F5BC501F9E7A64005D3BAD /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		63F5BC5B1F9E7A64005D3BAD /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -297,13 +264,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		63F5BC591F9E7A64005D3BAD /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -311,11 +271,6 @@
 			isa = PBXTargetDependency;
 			target = 63F5BC3D1F9E7A64005D3BAD /* DataReader */;
 			targetProxy = 63F5BC531F9E7A64005D3BAD /* PBXContainerItemProxy */;
-		};
-		63F5BC5F1F9E7A64005D3BAD /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 63F5BC3D1F9E7A64005D3BAD /* DataReader */;
-			targetProxy = 63F5BC5E1F9E7A64005D3BAD /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -498,36 +453,6 @@
 			};
 			name = Release;
 		};
-		63F5BC6D1F9E7A64005D3BAD /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				CODE_SIGN_STYLE = Automatic;
-				INFOPLIST_FILE = DataReaderUITests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.haze.DataReaderUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = DataReader;
-			};
-			name = Debug;
-		};
-		63F5BC6E1F9E7A64005D3BAD /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				CODE_SIGN_STYLE = Automatic;
-				INFOPLIST_FILE = DataReaderUITests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.haze.DataReaderUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = DataReader;
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -554,15 +479,6 @@
 			buildConfigurations = (
 				63F5BC6A1F9E7A64005D3BAD /* Debug */,
 				63F5BC6B1F9E7A64005D3BAD /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		63F5BC6C1F9E7A64005D3BAD /* Build configuration list for PBXNativeTarget "DataReaderUITests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				63F5BC6D1F9E7A64005D3BAD /* Debug */,
-				63F5BC6E1F9E7A64005D3BAD /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
