@@ -26,9 +26,7 @@ class ViewController: UITableViewController {
     func fetchData() {
         guard let url = URL(string: jsonUrlString) else { return }
         URLSession.shared.dataTask(with: url) { (data, response, err) in
-            // TODO: check err
-            // TODO: check response status
-            
+            // TODO: check err and response status
             guard let data = data else { return }
             
             do {
@@ -48,6 +46,16 @@ class ViewController: UITableViewController {
         
         DispatchQueue.main.async {
             self.tableView.reloadData()
+        }
+    }
+    
+    override func becomeFirstResponder() -> Bool {
+        return true
+    }
+    
+    override func motionEnded(_ motion: UIEventSubtype, with event: UIEvent?) {
+        if motion == .motionShake {
+            fetchData()
         }
     }
 
