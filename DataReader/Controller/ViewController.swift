@@ -14,10 +14,10 @@ class ViewController: UIViewController, UITableViewDataSource {
     
     @IBOutlet weak var tableView: UITableView!
     
-    // TODO: this should be private, its not because of the VC+DataChange extension
+    // TODO: textObjects should be private
     var textObjects = [String]()
-    private let reuseCellId = "DynamicCell"
-    
+    private let reuseCellId = "DynamicCell", cellNibName = "DynamicCell"
+    // TODO: delete timer if DataChange feature not needed
     var timer: Timer?
     
     convenience init(dataModel: [String]) {
@@ -31,10 +31,10 @@ class ViewController: UIViewController, UITableViewDataSource {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        tableView.register(UINib(nibName: "DynamicCell", bundle: nil), forCellReuseIdentifier: reuseCellId)
+        tableView.register(UINib(nibName: cellNibName, bundle: nil), forCellReuseIdentifier: reuseCellId)
         tableView.tableFooterView = UIView()
 
-        enableDataChangeFeature()
+        //enableDataChangeFeature()
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

@@ -15,7 +15,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         window = UIWindow(frame: UIScreen.main.bounds)
-        window?.rootViewController = ViewController(dataModel: Array.createDataModel(size: 10))
+        window?.rootViewController = ViewController(dataModel: [])//dataModel: Array.createDataModel(size: 10))
         window?.makeKeyAndVisible()
         return true
     }
