@@ -8,7 +8,10 @@
 
 import UIKit
 
-class ViewController: UITableViewController {
+class ViewController: UIViewController {
+    
+    @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var activitiIndicator: UIActivityIndicatorView!
     
     var textObjects = [String]() //  = Array.createDataModel(size: 10)
     let cellId = "Cell"
@@ -30,26 +33,33 @@ class ViewController: UITableViewController {
             FetchManager.requestData(delegate: self)
         }
     }
+}
 
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return textObjects.count
-    }
-    
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath)
-        
-        if let dynamicCell = cell as? DataTextViewCell {
-            dynamicCell.dataTextView.text = textObjects[indexPath.row]
-            dynamicCell.dataTextId.text = String(indexPath.row)
+extension ViewController: UITableViewDataSource {
+
+        func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+            return textObjects.count
         }
-
-        return cell
-    }
+    
+        func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+            let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath)
+    
+            if let dynamicCell = cell as? DataTextViewCell {
+                dynamicCell.dataTextView.text = textObjects[indexPath.row]
+                dynamicCell.dataTextId.text = String(indexPath.row)
+            }
+    
+            return cell
+        }
 }
 
 extension ViewController: FetchManagerDelegate {
     
     func requestCompleted(data: [String]?, error: DataManagerError?) {
+        
+        DispatchQueue.main.async {
+            self.activitiIndicator.stopAnimating()
+        }
         
         guard let data = data else { return }
         
