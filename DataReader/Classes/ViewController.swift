@@ -12,50 +12,22 @@ class ViewController: UITableViewController {
     
     var textObjects = [String]() //  = Array.createDataModel(size: 10)
     let cellId = "Cell"
-    let jsonUrlString = "https://private-5e934f-datatextapi.apiary-mock.com/data"
     var timer: Timer?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.tableFooterView = UIView()
         
-        fetchData()
 //        enableDataChangeFeature()
     }
     
-    func fetchData() {
-        guard let url = URL(string: jsonUrlString) else { return }
-        URLSession.shared.dataTask(with: url) { (data, response, err) in
-            // TODO: check err and response status
-            guard let data = data else { return }
-            
-            do {
-                let json = try JSONSerialization.jsonObject(with: data, options: .mutableContainers) as? [String]
-                if let stringArray = json {
-                    self.updateAllCells(dataModel: stringArray)
-                }
-            } catch let jsonErr {
-                print("JSON serialiazing errror", jsonErr)
-            }
-            
-            }.resume()
-    }
-    
-    func updateAllCells(dataModel: [String]) {
-        textObjects = dataModel
-        
-        DispatchQueue.main.async {
-            self.tableView.reloadData()
-        }
-    }
-    
-    override func becomeFirstResponder() -> Bool {
-        return true
+    override func viewWillAppear(_ animated: Bool) {
+        FetchManager.requestData(delegate: self)
     }
     
     override func motionEnded(_ motion: UIEventSubtype, with event: UIEvent?) {
         if motion == .motionShake {
-            fetchData()
+            FetchManager.requestData(delegate: self)
         }
     }
 
@@ -73,4 +45,18 @@ class ViewController: UITableViewController {
 
         return cell
     }
+}
+
+extension ViewController: FetchManagerDelegate {
+    
+    func requestCompleted(data: [String]?, error: DataManagerError?) {
+        
+        guard let data = data else { return }
+        
+        DispatchQueue.main.async {
+            self.textObjects = data
+            self.tableView.reloadData()
+        }
+    }
+    
 }
