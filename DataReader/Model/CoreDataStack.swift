@@ -16,6 +16,7 @@ class CoreDataStack: NSObject {
     private override init() {}
     
     // MARK: - Core Data stack
+    
     lazy var persistentContainer: NSPersistentContainer = {
         /*
          The persistent container for the application. This implementation
@@ -34,7 +35,7 @@ class CoreDataStack: NSObject {
     
     // MARK: - Core Data Saving support
     
-    func saveContext () {
+    func saveContext() {
         let context = persistentContainer.viewContext
         if context.hasChanges {
             do {
