@@ -17,7 +17,7 @@ protocol FetchManagerDelegate {
     func requestCompleted(data: [String]?, error: DataManagerError?)
 }
 
-class FetchManager {
+class APIService {
     static func requestData(delegate: FetchManagerDelegate)  {
         
         let jsonUrlString = "https://private-5e934f-datatextapi.apiary-mock.com/data"

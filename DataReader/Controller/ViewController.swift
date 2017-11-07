@@ -14,40 +14,30 @@ class ViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var activitiIndicator: UIActivityIndicatorView!
     
-//    var textObjects = [String]() //  = Array.createDataModel(size: 10)
-    var timer: Timer?
-    
-    private lazy var persistentContainer: NSPersistentContainer = {
-        
-        let container = NSPersistentContainer(name: "DataTextModel")
-        container.loadPersistentStores(completionHandler: { (storeDescription, error) in
-            if let error = error as NSError? {
-                print("Unresolved error \(error), \(error.userInfo)")
-            }
-        })
-        return container
-    }()
-    fileprivate lazy var fetchedResultsController: NSFetchedResultsController<DataText> = {
+    lazy var fetchedResultsController: NSFetchedResultsController<DataText> = {
 
         let fetchRequest: NSFetchRequest<DataText> = DataText.fetchRequest()
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: "createdAt", ascending: true)]
-        let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: self.persistentContainer.viewContext, sectionNameKeyPath: nil, cacheName: nil)
+        let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: CoreDataStack.sharedInstance.persistentContainer.viewContext, sectionNameKeyPath: nil, cacheName: nil)
         fetchedResultsController.delegate = self
         
         return fetchedResultsController
     }()
     
+    // MARK: - View related
     
     override func viewDidLoad() {
+        
         super.viewDidLoad()
         tableView.tableFooterView = UIView()
-        
-//        enableDataChangeFeature()
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        self.updateTable()
 //        FetchManager.requestData(delegate: self)
     }
+    
+    // MARK: - Gesture recognition support
     
     override func motionEnded(_ motion: UIEventSubtype, with event: UIEvent?) {
         if motion == .motionShake {
@@ -55,16 +45,32 @@ class ViewController: UIViewController {
         }
     }
     
-    // MARK: - Core Data Saving support
+    // MARK: - Table View support
     
-    func saveContext () {
-        let context = persistentContainer.viewContext
+    func updateTable() {
+        
+        do {
+            try self.fetchedResultsController.performFetch()
+            
+            if let results = self.fetchedResultsController.sections {
+                if results[0].numberOfObjects == 0 {
+                    APIService.requestData(delegate: self)
+                }
+            }
+//            print("Update table, fetched results: \(String(describing: self.fetchedResultsController.sections?[0].numberOfObjects))")
+        } catch let error  {
+            print("Error - updateTable: \(error)")
+        }
+    }
+    
+    func saveContext() {
+        let context = CoreDataStack.sharedInstance.persistentContainer.viewContext
         if context.hasChanges {
             do {
                 try context.save()
             } catch {
                 let nserror = error as NSError
-                print("Unresolved error \(nserror), \(nserror.userInfo)")
+                print("Error - saveContext: \(nserror), \(nserror.userInfo)")
             }
         }
     }
@@ -98,7 +104,7 @@ extension ViewController: UITableViewDataSource {
 extension ViewController: FetchManagerDelegate {
     
     func requestCompleted(data: [String]?, error: DataManagerError?) {
-        
+        print("ayyy it works")
 //        DispatchQueue.main.async {
 //            self.activitiIndicator.stopAnimating()
 //        }
