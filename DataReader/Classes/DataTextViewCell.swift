@@ -10,7 +10,7 @@ import UIKit
 
 class DataTextViewCell: UITableViewCell {
 
-    @IBOutlet weak var dataTextView: UITextView!
     @IBOutlet weak var dataTextId: UITextView!
+    @IBOutlet weak var dataTextView: UITextView!
     
 }
