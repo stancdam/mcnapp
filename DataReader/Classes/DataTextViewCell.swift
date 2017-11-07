@@ -10,6 +10,8 @@ import UIKit
 
 class DataTextViewCell: UITableViewCell {
 
+    static let reuseIdentifier = "Cell"
+    
     @IBOutlet weak var dataTextId: UITextView!
     @IBOutlet weak var dataTextView: UITextView!
     
