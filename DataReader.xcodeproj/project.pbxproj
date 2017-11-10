@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		633356561FABBD520052CA59 /* ViewController+DataChange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 633356551FABBD520052CA59 /* ViewController+DataChange.swift */; };
 		633356581FB10C120052CA59 /* APIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 633356571FB10C120052CA59 /* APIService.swift */; };
 		6333565C1FB23BD20052CA59 /* DataTextModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 6333565A1FB23BD20052CA59 /* DataTextModel.xcdatamodeld */; };
 		6333569F1FB261630052CA59 /* CoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6333569E1FB261630052CA59 /* CoreDataStack.swift */; };
@@ -41,7 +40,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		633356551FABBD520052CA59 /* ViewController+DataChange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ViewController+DataChange.swift"; sourceTree = "<group>"; };
 		633356571FB10C120052CA59 /* APIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIService.swift; sourceTree = "<group>"; };
 		6333565B1FB23BD20052CA59 /* DataTexts.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = DataTexts.xcdatamodel; sourceTree = "<group>"; };
 		6333569E1FB261630052CA59 /* CoreDataStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataStack.swift; sourceTree = "<group>"; };
@@ -179,7 +177,6 @@
 		63F5BCF31FA27286005D3BAD /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				633356551FABBD520052CA59 /* ViewController+DataChange.swift */,
 				63F5BCF41FA2731C005D3BAD /* String+RandomWord.swift */,
 				63F5BCF71FA27724005D3BAD /* Array+DataModel.swift */,
 			);
@@ -321,7 +318,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				6333565C1FB23BD20052CA59 /* DataTextModel.xcdatamodeld in Sources */,
-				633356561FABBD520052CA59 /* ViewController+DataChange.swift in Sources */,
 				633356581FB10C120052CA59 /* APIService.swift in Sources */,
 				6333569F1FB261630052CA59 /* CoreDataStack.swift in Sources */,
 				63F5BC441F9E7A64005D3BAD /* ViewController.swift in Sources */,

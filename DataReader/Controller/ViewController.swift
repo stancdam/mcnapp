@@ -16,7 +16,7 @@ class ViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var activitiIndicator: UIActivityIndicatorView!
     
-    lazy var fetchedResultsController: NSFetchedResultsController<DataText> = {
+    private lazy var fetchedResultsController: NSFetchedResultsController<DataText> = {
         let fetchRequest: NSFetchRequest<DataText> = DataText.fetchRequest()
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: "content", ascending: true)]
         let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: CoreDataStack.sharedInstance.persistentContainer.viewContext, sectionNameKeyPath: nil, cacheName: nil)
@@ -34,6 +34,7 @@ class ViewController: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         self.updateTable()
     }
     
