@@ -18,7 +18,7 @@ protocol FetchManagerDelegate {
 }
 
 class APIService {
-    static func requestData(delegate: FetchManagerDelegate)  {
+    func requestData(delegate: FetchManagerDelegate)  {
         
         let jsonUrlString = "https://private-5e934f-datatextapi.apiary-mock.com/data"
         guard let url = URL(string: jsonUrlString) else { return }

@@ -16,6 +16,8 @@ class ViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var activitiIndicator: UIActivityIndicatorView!
     
+    var apiService: APIService!
+    
     private lazy var fetchedResultsController: NSFetchedResultsController<DataText> = {
         let fetchRequest: NSFetchRequest<DataText> = DataText.fetchRequest()
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: "content", ascending: true)]
@@ -45,7 +47,7 @@ class ViewController: UIViewController {
         if motion == .motionShake {
             self.clearData()
             self.activitiIndicator.isHidden = false
-            APIService.requestData(delegate: self)
+            apiService.requestData(delegate: self)
         }
     }
     
@@ -58,7 +60,7 @@ class ViewController: UIViewController {
             
             if let results = self.fetchedResultsController.sections {
                 if results[0].numberOfObjects == 0 {
-                    APIService.requestData(delegate: self)
+                    apiService.requestData(delegate: self)
                 } else {
                     self.activitiIndicator.stopAnimating()
                 }
