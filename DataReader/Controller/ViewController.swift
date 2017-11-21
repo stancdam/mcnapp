@@ -16,7 +16,7 @@ class ViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var activitiIndicator: UIActivityIndicatorView!
     
-    var apiService: APIService!
+    var apiService: APIServiceProtocol!
     
     private lazy var fetchedResultsController: NSFetchedResultsController<DataText> = {
         let fetchRequest: NSFetchRequest<DataText> = DataText.fetchRequest()
@@ -154,7 +154,6 @@ extension ViewController: UITableViewDataSource {
 extension ViewController: FetchManagerDelegate {
     
     func requestCompleted(data: [String]?, error: DataManagerError?) {
-        print("Ayyy it works")
         DispatchQueue.main.async {
             self.activitiIndicator.stopAnimating()
         }
