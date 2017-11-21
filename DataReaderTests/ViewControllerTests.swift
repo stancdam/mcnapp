@@ -16,6 +16,7 @@ class ViewControllerTest: XCTestCase {
         let apiServiceMock = APIServiceMock(data: nil, error: nil)
         let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ViewController") as! ViewController
         viewController.apiService = apiServiceMock
+        viewController.coreDataStack = CoreDataStack()
 
          _ = viewController.view
         
@@ -27,6 +28,7 @@ class ViewControllerTest: XCTestCase {
         let apiServiceMock = APIServiceMock(data: nil, error: nil)
         let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ViewController") as! ViewController
         viewController.apiService = apiServiceMock
+        viewController.coreDataStack = CoreDataStack()
         
         _ = viewController.view
         

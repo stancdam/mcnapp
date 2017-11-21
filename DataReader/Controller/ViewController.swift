@@ -17,11 +17,12 @@ class ViewController: UIViewController {
     @IBOutlet weak var activitiIndicator: UIActivityIndicatorView!
     
     var apiService: APIServiceProtocol!
+    var coreDataStack: CoreDataStack!
     
     private lazy var fetchedResultsController: NSFetchedResultsController<DataText> = {
         let fetchRequest: NSFetchRequest<DataText> = DataText.fetchRequest()
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: "content", ascending: true)]
-        let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: CoreDataStack.sharedInstance.persistentContainer.viewContext, sectionNameKeyPath: nil, cacheName: nil)
+        let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: coreDataStack.persistentContainer.viewContext, sectionNameKeyPath: nil, cacheName: nil)
         fetchedResultsController.delegate = self
         
         return fetchedResultsController
@@ -75,7 +76,7 @@ class ViewController: UIViewController {
     // MARK: - CoreData stuff?
     
     private func createDataTextEntityFrom(text: String) -> NSManagedObject? {
-        let viewContext = CoreDataStack.sharedInstance.persistentContainer.viewContext
+        let viewContext = coreDataStack.persistentContainer.viewContext
         if let dataTextEntity = NSEntityDescription.insertNewObject(forEntityName: "DataText", into: viewContext) as? DataText {
             dataTextEntity.content = text
             return dataTextEntity
@@ -86,7 +87,7 @@ class ViewController: UIViewController {
     private func saveInCoreDataWith(array: [String]) {
         _ = array.map{self.createDataTextEntityFrom(text: $0)}
         do {
-            try CoreDataStack.sharedInstance.persistentContainer.viewContext.save()
+            try coreDataStack.persistentContainer.viewContext.save()
         } catch let error {
             print("Error - saveInCoreDataWith: \(error)")
         }
@@ -94,12 +95,12 @@ class ViewController: UIViewController {
     
     private func clearData() {
         do {
-            let context = CoreDataStack.sharedInstance.persistentContainer.viewContext
+            let context = coreDataStack.persistentContainer.viewContext
             let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: String(describing: DataText.self))
             do {
                 let objects  = try context.fetch(fetchRequest) as? [NSManagedObject]
                 _ = objects.map{$0.map{context.delete($0)}}
-                CoreDataStack.sharedInstance.saveContext()
+                coreDataStack.saveContext()
             } catch let error {
                 print("Error - clearData: \(error)")
             }

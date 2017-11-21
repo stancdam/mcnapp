@@ -13,6 +13,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
     let apiService = APIService()
+    let coreDataStack = CoreDataStack()
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Initialize Storyboard
@@ -22,6 +23,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if let viewController = storyboard.instantiateInitialViewController() as? ViewController {
             // Configure View Controller
             viewController.apiService = apiService
+            viewController.coreDataStack = coreDataStack
             
             // Set Root View Controller
             window?.rootViewController = viewController
