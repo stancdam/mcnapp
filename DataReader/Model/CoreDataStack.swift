@@ -14,6 +14,15 @@ class CoreDataStack: NSObject {
     
     weak public var tableView: UITableView!
     
+    lazy var fetchedResultsController: NSFetchedResultsController<DataText> = {
+        let fetchRequest: NSFetchRequest<DataText> = DataText.fetchRequest()
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "content", ascending: true)]
+        let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: self.persistentContainer.viewContext, sectionNameKeyPath: nil, cacheName: nil)
+        fetchedResultsController.delegate = self
+        
+        return fetchedResultsController
+    }()
+    
     // MARK: - Core Data stack
     
     lazy var persistentContainer: NSPersistentContainer = {
@@ -47,6 +56,40 @@ class CoreDataStack: NSObject {
             }
         }
     }
+    
+    // MARK: - CoreData stuff?
+    
+    func createDataTextEntityFrom(text: String) -> NSManagedObject? {
+        let viewContext = self.persistentContainer.viewContext
+        if let dataTextEntity = NSEntityDescription.insertNewObject(forEntityName: "DataText", into: viewContext) as? DataText {
+            dataTextEntity.content = text
+            return dataTextEntity
+        }
+        return nil
+    }
+    
+    func saveInCoreDataWith(array: [String]) {
+        _ = array.map{self.createDataTextEntityFrom(text: $0)}
+        do {
+            try self.persistentContainer.viewContext.save()
+        } catch let error {
+            print("Error - saveInCoreDataWith: \(error)")
+        }
+    }
+    
+    func clearData() {
+        do {
+            let context = self.persistentContainer.viewContext
+            let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: String(describing: DataText.self))
+            do {
+                let objects  = try context.fetch(fetchRequest) as? [NSManagedObject]
+                _ = objects.map{$0.map{context.delete($0)}}
+                self.saveContext()
+            } catch let error {
+                print("Error - clearData: \(error)")
+            }
+        }
+    }
 }
 
 extension CoreDataStack: NSFetchedResultsControllerDelegate {
@@ -75,20 +118,20 @@ extension CoreDataStack: NSFetchedResultsControllerDelegate {
 extension CoreDataStack: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-//        guard let dataTexts = fetchedResultsController.fetchedObjects else { return 0 }
-        return 0
+        guard let dataTexts = fetchedResultsController.fetchedObjects else { return 0 }
+        return dataTexts.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-//        let cell = tableView.dequeueReusableCell(withIdentifier: DataTextViewCell.reuseIdentifier, for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: DataTextViewCell.reuseIdentifier, for: indexPath)
         
-//        let textObject = fetchedResultsController.object(at: indexPath)
-//
-//        if let dynamicCell = cell as? DataTextViewCell {
-//            dynamicCell.dataTextView.text = textObject.content
-//            dynamicCell.dataTextId.text = String(indexPath.row)
-//        }
+        let textObject = fetchedResultsController.object(at: indexPath)
+
+        if let dynamicCell = cell as? DataTextViewCell {
+            dynamicCell.dataTextView.text = textObject.content
+            dynamicCell.dataTextId.text = String(indexPath.row)
+        }
         
-        return UITableViewCell()
+        return cell
     }
 }
