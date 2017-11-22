@@ -33,12 +33,16 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        assert(coreDataStack != nil, "dataProvider is not allowed to be nil at this point")
+        tableView.dataSource = coreDataStack
+        coreDataStack.tableView = tableView
         tableView.tableFooterView = UIView()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.updateTable()
+//        self.updateTable()
     }
     
     
@@ -57,16 +61,16 @@ class ViewController: UIViewController {
     
     func updateTable() {
         do {
-            try self.fetchedResultsController.performFetch()
-            
-            if let results = self.fetchedResultsController.sections {
-                if results[0].numberOfObjects == 0 {
-                    apiService.requestData(delegate: self)
-                } else {
-                    self.activitiIndicator.stopAnimating()
-                }
-                print("Update table, fetched results: \(results[0].numberOfObjects)")
-            }
+//            try self.fetchedResultsController.performFetch()
+//            
+//            if let results = self.fetchedResultsController.sections {
+//                if results[0].numberOfObjects == 0 {
+//                    apiService.requestData(delegate: self)
+//                } else {
+//                    self.activitiIndicator.stopAnimating()
+//                }
+//                print("Update table, fetched results: \(results[0].numberOfObjects)")
+//            }
         } catch let error  {
             print("Error - updateTable: \(error)")
         }
@@ -127,27 +131,27 @@ extension ViewController: NSFetchedResultsControllerDelegate {
     }
     
     func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        tableView.beginUpdates()
+        self.tableView.beginUpdates()
     }
 }
 
 extension ViewController: UITableViewDataSource {
-    
+
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         guard let dataTexts = fetchedResultsController.fetchedObjects else { return 0 }
         return dataTexts.count
     }
-    
+
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: DataTextViewCell.reuseIdentifier, for: indexPath)
-        
+
         let textObject = fetchedResultsController.object(at: indexPath)
-        
+
         if let dynamicCell = cell as? DataTextViewCell {
             dynamicCell.dataTextView.text = textObject.content
             dynamicCell.dataTextId.text = String(indexPath.row)
         }
-        
+
         return cell
     }
 }

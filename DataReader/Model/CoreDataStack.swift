@@ -12,6 +12,8 @@ import CoreData
 
 class CoreDataStack: NSObject {
     
+    weak public var tableView: UITableView!
+    
     // MARK: - Core Data stack
     
     lazy var persistentContainer: NSPersistentContainer = {
@@ -44,5 +46,49 @@ class CoreDataStack: NSObject {
                 fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
             }
         }
+    }
+}
+
+extension CoreDataStack: NSFetchedResultsControllerDelegate {
+    
+    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
+        
+        switch type {
+        case .insert:
+            self.tableView.insertRows(at: [newIndexPath!], with: .automatic)
+        case .delete:
+            self.tableView.deleteRows(at: [indexPath!], with: .automatic)
+        default:
+            break
+        }
+    }
+    
+    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        self.tableView.endUpdates()
+    }
+    
+    func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        self.tableView.beginUpdates()
+    }
+}
+
+extension CoreDataStack: UITableViewDataSource {
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+//        guard let dataTexts = fetchedResultsController.fetchedObjects else { return 0 }
+        return 0
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+//        let cell = tableView.dequeueReusableCell(withIdentifier: DataTextViewCell.reuseIdentifier, for: indexPath)
+        
+//        let textObject = fetchedResultsController.object(at: indexPath)
+//
+//        if let dynamicCell = cell as? DataTextViewCell {
+//            dynamicCell.dataTextView.text = textObject.content
+//            dynamicCell.dataTextId.text = String(indexPath.row)
+//        }
+        
+        return UITableViewCell()
     }
 }
