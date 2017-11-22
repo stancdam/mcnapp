@@ -17,7 +17,7 @@ class ViewController: UIViewController {
     @IBOutlet weak var activitiIndicator: UIActivityIndicatorView!
     
     var apiService: APIServiceProtocol!
-    var coreDataStack: CoreDataStack!
+    var coreDataStack: CoreDataStackProtocol!
     
     // MARK: - View related
     
@@ -50,20 +50,16 @@ class ViewController: UIViewController {
     // MARK: - Table View support
     
     func updateTable() {
-        do {
-            try coreDataStack.fetchedResultsController.performFetch()
-            
-            if let results = coreDataStack.fetchedResultsController.sections {
-                if results[0].numberOfObjects == 0 {
-                    apiService.requestData(delegate: self)
-                } else {
-                    self.activitiIndicator.stopAnimating()
-                }
-                print("Update table, fetched results: \(results[0].numberOfObjects)")
-            }
-        } catch let error  {
-            print("Error - updateTable: \(error)")
+        coreDataStack.fetchData()
+    
+        let numberOfObjects = coreDataStack.getNumberOfObjects()
+        if numberOfObjects == 0 {
+            apiService.requestData(delegate: self)
+            print("goooood")
+        } else {
+            self.activitiIndicator.stopAnimating()
         }
+        print("Update table, fetched results: \(numberOfObjects)")
     }
 }
 

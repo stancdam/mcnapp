@@ -10,11 +10,12 @@ import Foundation
 import UIKit
 import CoreData
 
-class CoreDataStack: NSObject {
+class CoreDataStack: NSObject, CoreDataStackProtocol {
     
     weak public var tableView: UITableView!
+    public var managedObjectContext: NSManagedObjectContext?
     
-    lazy var fetchedResultsController: NSFetchedResultsController<DataText> = {
+    private lazy var fetchedResultsController: NSFetchedResultsController<DataText> = {
         let fetchRequest: NSFetchRequest<DataText> = DataText.fetchRequest()
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: "content", ascending: true)]
         let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: self.persistentContainer.viewContext, sectionNameKeyPath: nil, cacheName: nil)
@@ -22,16 +23,8 @@ class CoreDataStack: NSObject {
         
         return fetchedResultsController
     }()
-    
-    // MARK: - Core Data stack
-    
-    lazy var persistentContainer: NSPersistentContainer = {
-        /*
-         The persistent container for the application. This implementation
-         creates and returns a container, having loaded the store for the
-         application to it. This property is optional since there are legitimate
-         error conditions that could cause the creation of the store to fail.
-         */
+
+    private lazy var persistentContainer: NSPersistentContainer = {
         let container = NSPersistentContainer(name: "DataTextModel")
         container.loadPersistentStores(completionHandler: { (storeDescription, error) in
             if let error = error as NSError? {
@@ -43,7 +36,7 @@ class CoreDataStack: NSObject {
     
     // MARK: - Core Data Saving support
     
-    func saveContext() {
+    private func saveContext() {
         let context = persistentContainer.viewContext
         if context.hasChanges {
             do {
@@ -57,9 +50,7 @@ class CoreDataStack: NSObject {
         }
     }
     
-    // MARK: - CoreData stuff?
-    
-    func createDataTextEntityFrom(text: String) -> NSManagedObject? {
+    private func createDataTextEntityFrom(text: String) -> NSManagedObject? {
         let viewContext = self.persistentContainer.viewContext
         if let dataTextEntity = NSEntityDescription.insertNewObject(forEntityName: "DataText", into: viewContext) as? DataText {
             dataTextEntity.content = text
@@ -68,12 +59,27 @@ class CoreDataStack: NSObject {
         return nil
     }
     
+    // MARK: - CoreDataStackProtocol
+    
     func saveInCoreDataWith(array: [String]) {
         _ = array.map{self.createDataTextEntityFrom(text: $0)}
         do {
             try self.persistentContainer.viewContext.save()
         } catch let error {
             print("Error - saveInCoreDataWith: \(error)")
+        }
+    }
+    
+    func getNumberOfObjects() -> Int {
+        if let results = self.fetchedResultsController.sections { return results[0].numberOfObjects }
+        return 0
+    }
+    
+    func fetchData() {
+        do {
+            try self.fetchedResultsController.performFetch()
+        } catch let error  {
+            print("Error - updateTable: \(error)")
         }
     }
     
