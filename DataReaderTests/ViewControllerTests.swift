@@ -6,6 +6,7 @@
 //  Copyright © 2017 haze. All rights reserved.
 //
 
+import CoreData
 import XCTest
 @testable import DataReader
 
@@ -16,7 +17,7 @@ class ViewControllerTest: XCTestCase {
         let apiServiceMock = APIServiceMock(data: nil, error: nil)
         let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ViewController") as! ViewController
         viewController.apiService = apiServiceMock
-        viewController.coreDataStack = CoreDataStack()
+        viewController.coreDataStack = CoreDataStackMock()
 
          _ = viewController.view
         
@@ -28,7 +29,7 @@ class ViewControllerTest: XCTestCase {
         let apiServiceMock = APIServiceMock(data: nil, error: nil)
         let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ViewController") as! ViewController
         viewController.apiService = apiServiceMock
-        viewController.coreDataStack = CoreDataStack()
+        viewController.coreDataStack = CoreDataStackMock()
         
         _ = viewController.view
         
@@ -50,4 +51,16 @@ class APIServiceMock: APIServiceProtocol {
         requestDataGotCalled = true
         delegate.requestCompleted(data: self.data, error: self.error)
     }
+}
+
+class CoreDataStackMock: NSObject, CoreDataStackProtocol {
+    var managedObjectContext: NSManagedObjectContext?
+    weak var tableView: UITableView!
+    
+    func saveInCoreDataWith(array: [String]) { }
+    func getNumberOfObjects() -> Int { return 0 }
+    func fetchData() { }
+    func clearData() { }
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int { return 1 }
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell { return UITableViewCell() }
 }
