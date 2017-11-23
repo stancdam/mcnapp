@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		6305E29A1FC2052D002B1186 /* APIServiceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6305E2991FC2052D002B1186 /* APIServiceProtocol.swift */; };
 		6305E29C1FC637AD002B1186 /* CoreDataStackProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6305E29B1FC637AD002B1186 /* CoreDataStackProtocol.swift */; };
+		6305E2A01FC78C71002B1186 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6305E29F1FC78C71002B1186 /* main.swift */; };
 		633356581FB10C120052CA59 /* APIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 633356571FB10C120052CA59 /* APIService.swift */; };
 		6333565C1FB23BD20052CA59 /* DataTextModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 6333565A1FB23BD20052CA59 /* DataTextModel.xcdatamodeld */; };
 		6333569F1FB261630052CA59 /* CoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6333569E1FB261630052CA59 /* CoreDataStack.swift */; };
@@ -42,6 +43,7 @@
 /* Begin PBXFileReference section */
 		6305E2991FC2052D002B1186 /* APIServiceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIServiceProtocol.swift; sourceTree = "<group>"; };
 		6305E29B1FC637AD002B1186 /* CoreDataStackProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataStackProtocol.swift; sourceTree = "<group>"; };
+		6305E29F1FC78C71002B1186 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		633356571FB10C120052CA59 /* APIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIService.swift; sourceTree = "<group>"; };
 		6333565B1FB23BD20052CA59 /* DataTexts.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = DataTexts.xcdatamodel; sourceTree = "<group>"; };
 		6333569E1FB261630052CA59 /* CoreDataStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataStack.swift; sourceTree = "<group>"; };
@@ -153,6 +155,7 @@
 				63F5BC4A1F9E7A64005D3BAD /* LaunchScreen.storyboard */,
 				63F5BC4D1F9E7A64005D3BAD /* Info.plist */,
 				6333565A1FB23BD20052CA59 /* DataTextModel.xcdatamodeld */,
+				6305E29F1FC78C71002B1186 /* main.swift */,
 			);
 			path = DataReader;
 			sourceTree = "<group>";
@@ -311,6 +314,7 @@
 			files = (
 				6333565C1FB23BD20052CA59 /* DataTextModel.xcdatamodeld in Sources */,
 				6305E29C1FC637AD002B1186 /* CoreDataStackProtocol.swift in Sources */,
+				6305E2A01FC78C71002B1186 /* main.swift in Sources */,
 				6305E29A1FC2052D002B1186 /* APIServiceProtocol.swift in Sources */,
 				633356581FB10C120052CA59 /* APIService.swift in Sources */,
 				6333569F1FB261630052CA59 /* CoreDataStack.swift in Sources */,
