@@ -14,25 +14,25 @@ class ViewControllerTest: XCTestCase {
     
     func test_requestDataIsCalledIfThereIsNoDataInCoreData() {
 
-//        let apiServiceMock = APIServiceMock(data: nil, error: nil)
-//        let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ViewController") as! ViewController
-//        viewController.apiService = apiServiceMock
-//        viewController.coreDataStack = CoreDataStackMock(0)
-//
-//         _ = viewController.view
-//
+        let apiServiceMock = APIServiceMock(data: nil, error: nil)
+        let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ViewController") as! ViewController
+        viewController.apiService = apiServiceMock
+        viewController.coreDataStack = CoreDataStackMock()
+
+         _ = viewController.view
+        
 //        XCTAssertTrue(apiServiceMock.requestDataGotCalled, "requestData should have been called")
     }
     
     func test_requestDataIsNotCalledIfThereIsDataInCoreData() {
         
-//        let apiServiceMock = APIServiceMock(data: nil, error: nil)
-//        let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ViewController") as! ViewController
-//        viewController.apiService = apiServiceMock
-//        viewController.coreDataStack = CoreDataStackMock(1)
-//        
-//        _ = viewController.view
-//        
+        let apiServiceMock = APIServiceMock(data: nil, error: nil)
+        let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ViewController") as! ViewController
+        viewController.apiService = apiServiceMock
+        viewController.coreDataStack = CoreDataStackMock()
+        
+        _ = viewController.view
+        
 //        XCTAssertTrue(!apiServiceMock.requestDataGotCalled, "requestData should not have been called")
     }
 }
@@ -56,12 +56,9 @@ class APIServiceMock: APIServiceProtocol {
 class CoreDataStackMock: NSObject, CoreDataStackProtocol {
     var managedObjectContext: NSManagedObjectContext?
     weak var tableView: UITableView!
-    var numberOfObjects = 0
-    
-    init(_ numberOfObjects: Int) { self.numberOfObjects = numberOfObjects }
     
     func saveInCoreDataWith(array: [String]) { }
-    func getNumberOfObjects() -> Int { return numberOfObjects }
+    func getNumberOfObjects() -> Int { return 0 }
     func fetchData() { }
     func clearData() { }
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int { return 1 }
