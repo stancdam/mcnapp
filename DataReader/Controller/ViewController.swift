@@ -55,7 +55,6 @@ class ViewController: UIViewController {
         let numberOfObjects = coreDataStack.getNumberOfObjects()
         if numberOfObjects == 0 {
             apiService.requestData(delegate: self)
-            print("goooood")
         } else {
             self.activitiIndicator.stopAnimating()
         }
