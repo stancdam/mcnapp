@@ -12,9 +12,19 @@ import XCTest
 
 class ViewControllerTest: XCTestCase {
     
-    func test_viewDidLoad_tableViewDataSourceShouldBeSet() {
+    var viewController: ViewController!
+    
+    override func setUp() {
+        super.setUp()
 
-        let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ViewController") as! ViewController
+        viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ViewController") as! ViewController
+    }
+    
+    override func tearDown() {
+        super.tearDown()
+    }
+    
+    func test_viewDidLoad_tableViewDataSourceShouldBeSet() {
 
         let _ = viewController.view
         
@@ -23,8 +33,6 @@ class ViewControllerTest: XCTestCase {
     
     func test_viewDidLoad_coreDataStackTableViewShouldBeSet() {
         
-        let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ViewController") as! ViewController
-        
         let _ = viewController.view
         
         XCTAssertTrue(viewController.coreDataStack.tableView != nil, "CoreDataStack tableView should be set")
@@ -32,19 +40,16 @@ class ViewControllerTest: XCTestCase {
     
     func test_viewDidLoad_tableFooterViewShouldBeSet() {
         
-        let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ViewController") as! ViewController
-        
         let _ = viewController.view
         
         XCTAssertTrue(viewController.tableView.tableFooterView != nil, "TableFooterView should be set")
     }
     
     func test_updateTable_noDataInCoreData_requestDataShouldBeCalled_emptyResponse() {
-        let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ViewController") as! ViewController
+        
         let apiService = APIServiceMock(data: nil, error: nil)
         viewController.coreDataStack = CoreDataStackMock()
         viewController.apiService = apiService
-        
         
         let _ = viewController.view
         viewController.updateTable()
@@ -52,13 +57,23 @@ class ViewControllerTest: XCTestCase {
         XCTAssertTrue(apiService.requestDataGotCalled, "RequestData from apiService should be called")
     }
     
+    func test_viewWillAppear_fetchDataShouldBeCalled() {
+        
+        let coreDataStack = CoreDataStackMock()
+        viewController.coreDataStack = coreDataStack
+        
+        let _ = viewController.view
+        viewController.viewWillAppear(false)
+        
+        XCTAssertTrue(coreDataStack.fetchDataWasCalled, "ViewWillAppear should trigger fetchData")
+    }
+    
     func test_updateTable_noDataInCoreData_requestDataShouldBeCalled_dataInResponse() {
-        let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ViewController") as! ViewController
+
         let apiService = APIServiceMock(data: ["Test"], error: nil)
         let coreDataStack = CoreDataStackMock()
         viewController.coreDataStack = coreDataStack
         viewController.apiService = apiService
-        
         
         let _ = viewController.view
         viewController.updateTable()
@@ -69,7 +84,7 @@ class ViewControllerTest: XCTestCase {
     }
     
     func test_updateTable_dataInCoreData_activitiIndicatorStopAnimationShouldBeCalled() {
-        let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ViewController") as! ViewController
+
         let coreDataStack = CoreDataStackMock()
         coreDataStack.numberOfObjects = 1
         viewController.coreDataStack = coreDataStack
@@ -103,10 +118,11 @@ class CoreDataStackMock: NSObject, CoreDataStackProtocol {
     var numberOfObjects: Int = 0
     var saveInCoreDataWithArrayWasCalled = false
     var clearDataWasCalled = false
+    var fetchDataWasCalled = false
     
     func saveInCoreDataWith(array: [String]) { saveInCoreDataWithArrayWasCalled = true }
     func getNumberOfObjects() -> Int { return numberOfObjects }
-    func fetchData() { }
+    func fetchData() { fetchDataWasCalled = true }
     func clearData() { clearDataWasCalled = true }
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int { return 1 }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell { return UITableViewCell() }
