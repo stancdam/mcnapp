@@ -14,6 +14,16 @@ class CoreDataStack: NSObject, CoreDataStackProtocol {
     
     weak public var tableView: UITableView!
     public var managedObjectContext: NSManagedObjectContext?
+
+    lazy var persistentContainer: NSPersistentContainer = {
+        let container = NSPersistentContainer(name: "DataTextModel")
+        container.loadPersistentStores(completionHandler: { (storeDescription, error) in
+            if let error = error as NSError? {
+                fatalError("Unresolved error \(error), \(error.userInfo)")
+            }
+        })
+        return container
+    }()
     
     private lazy var fetchedResultsController: NSFetchedResultsController<DataText> = {
         let fetchRequest: NSFetchRequest<DataText> = DataText.fetchRequest()
@@ -22,16 +32,6 @@ class CoreDataStack: NSObject, CoreDataStackProtocol {
         fetchedResultsController.delegate = self
         
         return fetchedResultsController
-    }()
-
-    private lazy var persistentContainer: NSPersistentContainer = {
-        let container = NSPersistentContainer(name: "DataTextModel")
-        container.loadPersistentStores(completionHandler: { (storeDescription, error) in
-            if let error = error as NSError? {
-                fatalError("Unresolved error \(error), \(error.userInfo)")
-            }
-        })
-        return container
     }()
     
     // MARK: - Core Data Saving support
@@ -50,13 +50,11 @@ class CoreDataStack: NSObject, CoreDataStackProtocol {
         }
     }
     
-    private func createDataTextEntityFrom(text: String) -> NSManagedObject? {
+    func createDataTextEntityFrom(text: String) -> NSManagedObject? {
         let viewContext = self.persistentContainer.viewContext
-        if let dataTextEntity = NSEntityDescription.insertNewObject(forEntityName: "DataText", into: viewContext) as? DataText {
-            dataTextEntity.content = text
-            return dataTextEntity
-        }
-        return nil
+        guard let dataTextEntity = NSEntityDescription.insertNewObject(forEntityName: "DataText", into: viewContext) as? DataText else { return nil }
+        dataTextEntity.content = text
+        return dataTextEntity
     }
     
     // MARK: - CoreDataStackProtocol
