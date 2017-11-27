@@ -32,73 +32,71 @@ class ViewControllerTest: XCTestCase {
     }
     
     func test_viewDidLoad_coreDataStackTableViewShouldBeSet() {
-        
+
         let _ = viewController.view
-        
+
         XCTAssertTrue(viewController.coreDataStack.tableView != nil, "CoreDataStack tableView should be set")
     }
-    
+
     func test_viewDidLoad_tableFooterViewShouldBeSet() {
-        
+
         let _ = viewController.view
-        
+
         XCTAssertTrue(viewController.tableView.tableFooterView != nil, "TableFooterView should be set")
     }
-    
+
     func test_updateTable_noDataInCoreData_requestDataShouldBeCalled_emptyResponse() {
-        
+
         let apiService = APIServiceMock(data: nil, error: nil)
         viewController.coreDataStack = CoreDataStackMock()
         viewController.apiService = apiService
-        
+
         let _ = viewController.view
         viewController.updateTable()
-        
+
         XCTAssertTrue(apiService.requestDataGotCalled, "RequestData from apiService should be called")
     }
-    
+
     func test_viewWillAppear_fetchDataShouldBeCalled() {
-        
+
         let coreDataStack = CoreDataStackMock()
         viewController.coreDataStack = coreDataStack
-        
+
         let _ = viewController.view
         viewController.viewWillAppear(false)
-        
+
         XCTAssertTrue(coreDataStack.fetchDataWasCalled, "ViewWillAppear should trigger fetchData")
     }
-    
+
     func test_updateTable_noDataInCoreData_requestDataShouldBeCalled_dataInResponse() {
 
-        let apiService = APIServiceMock(data: ["Test"], error: nil)
+        let apiService = APIServiceMock(data: nil, error: nil)
         let coreDataStack = CoreDataStackMock()
         viewController.coreDataStack = coreDataStack
         viewController.apiService = apiService
-        
+
         let _ = viewController.view
         viewController.updateTable()
-       
-        DispatchQueue.main.async {
-            XCTAssertTrue(apiService.requestDataGotCalled && coreDataStack.saveInCoreDataWithArrayWasCalled, "RequestData from apiService should be called and data should be saved")
-        }
+
+        XCTAssertTrue(coreDataStack.fetchDataWasCalled, "RequestData from apiService should be called and data should be saved")
     }
-    
+
     func test_updateTable_dataInCoreData_activitiIndicatorStopAnimationShouldBeCalled() {
 
         let coreDataStack = CoreDataStackMock()
         coreDataStack.numberOfObjects = 1
         viewController.coreDataStack = coreDataStack
-        
+
         let _ = viewController.view
         viewController.updateTable()
-        
+
         XCTAssertTrue(!viewController.activitiIndicator.isAnimating, "ActiveIndicator should be stopped")
     }
 }
 
 class APIServiceMock: APIServiceProtocol {
     func requestData(url: URL, callback: @escaping APIServiceProtocol.completeClosure) {
-        //
+        requestDataGotCalled = true
     }
     
     var requestDataGotCalled = false
@@ -109,14 +107,11 @@ class APIServiceMock: APIServiceProtocol {
         self.data = data
         self.error = error
     }
-    
-    func requestData(url: URL, delegate: FetchManagerDelegate) {
-        requestDataGotCalled = true
-        delegate.requestCompleted(data: self.data, error: self.error)
-    }
 }
 
 class CoreDataStackMock: NSObject, CoreDataStackProtocol {
+    func saveInCoreDataWith(data: Data?) { saveInCoreDataWithArrayWasCalled = true }
+    
     var managedObjectContext: NSManagedObjectContext?
     weak var tableView: UITableView!
     var numberOfObjects: Int = 0

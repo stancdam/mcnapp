@@ -13,7 +13,6 @@ import CoreData
 class CoreDataStack: NSObject, CoreDataStackProtocol {
     
     weak public var tableView: UITableView!
-    public var managedObjectContext: NSManagedObjectContext?
 
     lazy var persistentContainer: NSPersistentContainer = {
         let container = NSPersistentContainer(name: "DataTextModel")
@@ -65,6 +64,18 @@ class CoreDataStack: NSObject, CoreDataStackProtocol {
             try self.persistentContainer.viewContext.save()
         } catch let error {
             print("Error - saveInCoreDataWith: \(error)")
+        }
+    }
+    
+    func saveInCoreDataWith(data: Data?) {
+        guard let data = data else { return }
+        do {
+            let json = try JSONSerialization.jsonObject(with: data) as? [String]
+            if let stringArray = json {
+                self.saveInCoreDataWith(array: stringArray)
+            }
+        } catch {
+            // TODO
         }
     }
     

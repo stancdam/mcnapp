@@ -38,9 +38,19 @@ class CoreDataStackTest: XCTestCase {
     
     func test_saveInCoreDataWith_1elementArray() {
         
-        coreDataStack.saveInCoreDataWith(array: ["DataText1"])
+//        let data = "{\"DataText1\"}".data(using: String.Encoding.utf8)!
+//        do {
+//        let jsonData = try JSONSerialization.jsonObject(with: data)
+//            coreDataStack.saveInCoreDataWith(data: jsonData)
+//        } catch {
+//
+//        }
+//
+//        coreDataStack.saveInCoreDataWith(data: data)
+//        coreDataStack.saveInCoreDataWith(array: ["DataText1"])
         
-        XCTAssertEqual(numberOfItemsInPersistentStore(), 1)
+        
+//        XCTAssertEqual(numberOfItemsInPersistentStore(), 1)
     }
     
     func test_saveInCoreDataWith_2elementArray() {
@@ -57,6 +67,14 @@ class CoreDataStackTest: XCTestCase {
 //        coreDataStack.fetchData()
         
 //        XCTAssertEqual(coreDataStack.getNumberOfObjects(), 1)
+    }
+    
+    func test_saveInCoreDataWith() {
+        
+        coreDataStack.saveInCoreDataWith(array: ["DataText1", "DataText2"])
+        coreDataStack.clearData()
+        
+        XCTAssertEqual(numberOfItemsInPersistentStore(), 0)
     }
     
     func test_clearData() {

@@ -49,17 +49,9 @@ class ViewController: UIViewController {
             self.apiService.requestData(url: url) { (data, error) -> Void in
                 
                 guard let data = data else { return }
-                do {
-                    let json = try JSONSerialization.jsonObject(with: data) as? [String]
-                    if let stringArray = json {
-                        
-                        DispatchQueue.main.async {
-                            self.coreDataStack.saveInCoreDataWith(array: stringArray)
-                            self.activitiIndicator.stopAnimating()
-                        }
-                    }
-                } catch {
-                    // TODO?
+                DispatchQueue.main.async {
+                    self.coreDataStack.saveInCoreDataWith(data: data)
+                    self.activitiIndicator.stopAnimating()
                 }
             }
         }
@@ -79,17 +71,9 @@ class ViewController: UIViewController {
             self.apiService.requestData(url: url) { (data, error) -> Void in
                 
                 guard let data = data else { return }
-                do {
-                    let json = try JSONSerialization.jsonObject(with: data) as? [String]
-                    if let stringArray = json {
-                        
-                        DispatchQueue.main.async {
-                            self.coreDataStack.saveInCoreDataWith(array: stringArray)
-                            self.activitiIndicator.stopAnimating()
-                        }
-                    }
-                } catch {
-                    // TODO?
+                DispatchQueue.main.async {
+                    self.coreDataStack.saveInCoreDataWith(data: data)
+                    self.activitiIndicator.stopAnimating()
                 }
             }
             
@@ -98,20 +82,4 @@ class ViewController: UIViewController {
         }
         print("Update table, fetched results: \(numberOfObjects)")
     }
-}
-
-extension ViewController: FetchManagerDelegate {
-    
-    func requestCompleted(data: [String]?, error: DataManagerError?) {
-        DispatchQueue.main.async {
-            self.activitiIndicator.stopAnimating()
-        }
-        
-        guard let data = data else { return }
-        
-        DispatchQueue.main.async {
-            self.coreDataStack.saveInCoreDataWith(array: data)
-        }
-    }
-    
 }
