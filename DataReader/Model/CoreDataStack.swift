@@ -58,21 +58,13 @@ class CoreDataStack: NSObject, CoreDataStackProtocol {
     
     // MARK: - CoreDataStackProtocol
     
-    func saveInCoreDataWith(array: [String]) {
-        _ = array.map{self.createDataTextEntityFrom(text: $0)}
-        do {
-            try self.persistentContainer.viewContext.save()
-        } catch let error {
-            print("Error - saveInCoreDataWith: \(error)")
-        }
-    }
-    
     func saveInCoreDataWith(data: Data?) {
         guard let data = data else { return }
         do {
             let json = try JSONSerialization.jsonObject(with: data) as? [String]
             if let stringArray = json {
-                self.saveInCoreDataWith(array: stringArray)
+                _ = stringArray.map{self.createDataTextEntityFrom(text: $0)}
+                try self.persistentContainer.viewContext.save()
             }
         } catch {
             // TODO

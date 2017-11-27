@@ -45,9 +45,7 @@ class ViewController: UIViewController {
             let jsonUrlString = "https://private-5e934f-datatextapi.apiary-mock.com/data"
             guard let url = URL(string: jsonUrlString) else { return }
 
-            
             self.apiService.requestData(url: url) { (data, error) -> Void in
-                
                 guard let data = data else { return }
                 DispatchQueue.main.async {
                     self.coreDataStack.saveInCoreDataWith(data: data)
@@ -69,14 +67,12 @@ class ViewController: UIViewController {
             guard let url = URL(string: jsonUrlString) else { return }
             
             self.apiService.requestData(url: url) { (data, error) -> Void in
-                
                 guard let data = data else { return }
                 DispatchQueue.main.async {
                     self.coreDataStack.saveInCoreDataWith(data: data)
                     self.activitiIndicator.stopAnimating()
                 }
             }
-            
         } else {
             self.activitiIndicator.stopAnimating()
         }

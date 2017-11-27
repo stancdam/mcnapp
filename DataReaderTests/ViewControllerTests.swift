@@ -119,7 +119,6 @@ class CoreDataStackMock: NSObject, CoreDataStackProtocol {
     var clearDataWasCalled = false
     var fetchDataWasCalled = false
     
-    func saveInCoreDataWith(array: [String]) { saveInCoreDataWithArrayWasCalled = true }
     func getNumberOfObjects() -> Int { return numberOfObjects }
     func fetchData() { fetchDataWasCalled = true }
     func clearData() { clearDataWasCalled = true }
