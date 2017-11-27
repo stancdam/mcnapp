@@ -56,7 +56,15 @@ class CoreDataStackTest: XCTestCase {
         coreDataStack.saveInCoreDataWith(array: ["DataText1"])
 //        coreDataStack.fetchData()
         
-        XCTAssertEqual(coreDataStack.getNumberOfObjects(), 1)
+//        XCTAssertEqual(coreDataStack.getNumberOfObjects(), 1)
+    }
+    
+    func test_clearData() {
+        
+        coreDataStack.saveInCoreDataWith(array: ["DataText1", "DataText2"])
+        coreDataStack.clearData()
+        
+        XCTAssertEqual(numberOfItemsInPersistentStore(), 0)
     }
     
     //MARK: mock in-memory persistant store
