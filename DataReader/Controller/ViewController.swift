@@ -44,7 +44,24 @@ class ViewController: UIViewController {
             self.activitiIndicator.isHidden = false
             let jsonUrlString = "https://private-5e934f-datatextapi.apiary-mock.com/data"
             guard let url = URL(string: jsonUrlString) else { return }
-            apiService.requestData(url: url, delegate: self)
+
+            
+            self.apiService.requestData(url: url) { (data, error) -> Void in
+                
+                guard let data = data else { return }
+                do {
+                    let json = try JSONSerialization.jsonObject(with: data) as? [String]
+                    if let stringArray = json {
+                        
+                        DispatchQueue.main.async {
+                            self.coreDataStack.saveInCoreDataWith(array: stringArray)
+                            self.activitiIndicator.stopAnimating()
+                        }
+                    }
+                } catch {
+                    // TODO?
+                }
+            }
         }
     }
     
@@ -58,7 +75,24 @@ class ViewController: UIViewController {
         if numberOfObjects == 0 {
             let jsonUrlString = "https://private-5e934f-datatextapi.apiary-mock.com/data"
             guard let url = URL(string: jsonUrlString) else { return }
-            apiService.requestData(url: url, delegate: self)
+            
+            self.apiService.requestData(url: url) { (data, error) -> Void in
+                
+                guard let data = data else { return }
+                do {
+                    let json = try JSONSerialization.jsonObject(with: data) as? [String]
+                    if let stringArray = json {
+                        
+                        DispatchQueue.main.async {
+                            self.coreDataStack.saveInCoreDataWith(array: stringArray)
+                            self.activitiIndicator.stopAnimating()
+                        }
+                    }
+                } catch {
+                    // TODO?
+                }
+            }
+            
         } else {
             self.activitiIndicator.stopAnimating()
         }

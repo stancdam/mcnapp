@@ -43,8 +43,6 @@ class APIService: APIServiceProtocol {
     
     let session: URLSessionProtocol!
     
-    typealias completeClosure = ( _ data: Data?, _ error: Error?)->Void
-    
     init(session: URLSessionProtocol = URLSession.shared ) {
         self.session = session
     }
@@ -69,9 +67,14 @@ class APIService: APIServiceProtocol {
     
     func requestData(url: URL, callback: @escaping completeClosure)  {
         
-        let task = self.session.dataTask(with: url) { (data, response, error) in
-            callback(data, error)
-        }
-        task.resume()
+        print("requestData")
+        
+        self.session.dataTask(with: url) { (data, response, error) in
+            if let _ = error {
+                callback(nil, DataManagerError.unknown)
+            } else {
+                callback(data, nil)
+            }
+        }.resume()
     }
 }

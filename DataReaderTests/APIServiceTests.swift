@@ -33,6 +33,49 @@ class APIServiceTest: XCTestCase {
         
         XCTAssert(dataTask.resumeWasCalled)
     }
+    
+    func test_requestData_withResponseData_returnsData() {
+        
+        let session = MockURLSession()
+        
+        let expectedData = "{}".data(using: String.Encoding.utf8)
+        session.nextData = expectedData
+        
+        let dataTask = MockURLSessionDataTask()
+        
+        session.nextDataTask = dataTask
+        let apiService = APIService(session: session)
+        let url = URL(string: "http://testurl.com")!
+        
+        var actualData: Data?
+        
+        apiService.requestData(url: url) { (data, error) -> Void in
+            actualData = data
+        }
+        
+        XCTAssertEqual(actualData, expectedData)
+    }
+    
+    func test_requestData_withResponseData_returnsError() {
+        
+        let session = MockURLSession()
+        
+        session.nextError = DataManagerError.unknown
+        
+        let dataTask = MockURLSessionDataTask()
+        
+        session.nextDataTask = dataTask
+        let apiService = APIService(session: session)
+        let url = URL(string: "http://testurl.com")!
+        
+        var actualError: Error?
+        
+        apiService.requestData(url: url) { (data, error) -> Void in
+            actualError = error
+        }
+        
+        XCTAssertNotNil(actualError)
+    }
 }
 
 class FetchManagerMock: FetchManagerDelegate {
@@ -52,6 +95,9 @@ class MockURLSessionDataTask: URLSessionDataTaskProtocol {
 }
 
 class MockURLSession: URLSessionProtocol {
+    var nextData: Data?
+    var nextError: Error?
+    
     var nextDataTask = MockURLSessionDataTask()
     private (set) var lastURL: URL?
 
@@ -59,6 +105,7 @@ class MockURLSession: URLSessionProtocol {
                   completionHandler: @escaping DataTaskResult) -> URLSessionDataTaskProtocol
     {
         lastURL = url
+        completionHandler(nextData, nil, nextError)
         return nextDataTask
     }
 }

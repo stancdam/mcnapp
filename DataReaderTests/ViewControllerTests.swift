@@ -97,6 +97,10 @@ class ViewControllerTest: XCTestCase {
 }
 
 class APIServiceMock: APIServiceProtocol {
+    func requestData(url: URL, callback: @escaping APIServiceProtocol.completeClosure) {
+        //
+    }
+    
     var requestDataGotCalled = false
     var data: [String]?
     var error: DataManagerError?
