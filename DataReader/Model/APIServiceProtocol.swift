@@ -9,5 +9,5 @@
 import Foundation
 
 protocol APIServiceProtocol {
-    func requestData(delegate: FetchManagerDelegate)
+    func requestData(url: URL, delegate: FetchManagerDelegate)
 }

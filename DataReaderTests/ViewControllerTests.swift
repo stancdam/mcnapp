@@ -106,7 +106,7 @@ class APIServiceMock: APIServiceProtocol {
         self.error = error
     }
     
-    func requestData(delegate: FetchManagerDelegate) {
+    func requestData(url: URL, delegate: FetchManagerDelegate) {
         requestDataGotCalled = true
         delegate.requestCompleted(data: self.data, error: self.error)
     }

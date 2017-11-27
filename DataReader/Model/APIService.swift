@@ -17,13 +17,41 @@ protocol FetchManagerDelegate {
     func requestCompleted(data: [String]?, error: DataManagerError?)
 }
 
+protocol URLSessionDataTaskProtocol {
+    func resume()
+}
+
+typealias DataTaskResult = (Data?, URLResponse?, Error?) -> Void
+
+protocol URLSessionProtocol {
+    typealias DataTaskResult = (Data?, URLResponse?, Error?) -> Void
+    
+    func dataTask(with url: URL,
+                  completionHandler: @escaping DataTaskResult) -> URLSessionDataTaskProtocol
+}
+
+extension URLSessionDataTask: URLSessionDataTaskProtocol { }
+
+extension URLSession: URLSessionProtocol {
+    func dataTask(with url: URL, completionHandler: @escaping DataTaskResult) -> URLSessionDataTaskProtocol {
+        
+        return (dataTask(with: url, completionHandler: completionHandler) as URLSessionDataTask) as URLSessionDataTaskProtocol
+    }
+}
+
 class APIService: APIServiceProtocol {
-    func requestData(delegate: FetchManagerDelegate)  {
+    
+    let session: URLSessionProtocol!
+    
+    typealias completeClosure = ( _ data: Data?, _ error: Error?)->Void
+    
+    init(session: URLSessionProtocol = URLSession.shared ) {
+        self.session = session
+    }
+    
+    func requestData(url: URL, delegate: FetchManagerDelegate)  {
         
-        let jsonUrlString = "https://private-5e934f-datatextapi.apiary-mock.com/data"
-        guard let url = URL(string: jsonUrlString) else { return }
-        
-        URLSession.shared.dataTask(with: url) { (data, response, err) in
+        self.session.dataTask(with: url) { (data, response, err) in
             // TODO: check err and response status
             guard let data = data else { return }
             
@@ -38,5 +66,12 @@ class APIService: APIServiceProtocol {
             
             }.resume()
     }
-
+    
+    func requestData(url: URL, callback: @escaping completeClosure)  {
+        
+        let task = self.session.dataTask(with: url) { (data, response, error) in
+            callback(data, error)
+        }
+        task.resume()
+    }
 }

@@ -42,7 +42,9 @@ class ViewController: UIViewController {
         if motion == .motionShake {
             coreDataStack.clearData()
             self.activitiIndicator.isHidden = false
-            apiService.requestData(delegate: self)
+            let jsonUrlString = "https://private-5e934f-datatextapi.apiary-mock.com/data"
+            guard let url = URL(string: jsonUrlString) else { return }
+            apiService.requestData(url: url, delegate: self)
         }
     }
     
@@ -54,7 +56,9 @@ class ViewController: UIViewController {
     
         let numberOfObjects = coreDataStack.getNumberOfObjects()
         if numberOfObjects == 0 {
-            apiService.requestData(delegate: self)
+            let jsonUrlString = "https://private-5e934f-datatextapi.apiary-mock.com/data"
+            guard let url = URL(string: jsonUrlString) else { return }
+            apiService.requestData(url: url, delegate: self)
         } else {
             self.activitiIndicator.stopAnimating()
         }
