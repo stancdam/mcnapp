@@ -92,6 +92,16 @@ class ViewControllerTest: XCTestCase {
 
         XCTAssertTrue(!viewController.activitiIndicator.isAnimating, "ActiveIndicator should be stopped")
     }
+    
+    func test_motionShake() {
+        let apiService = APIServiceMock(data: nil, error: nil)
+        let coreDataStack = CoreDataStackMock()
+        viewController.coreDataStack = coreDataStack
+        viewController.apiService = apiService
+        
+        let _ = viewController.view
+        viewController.motionEnded(UIEventSubtype.motionShake, with: nil)
+    }
 }
 
 class APIServiceMock: APIServiceProtocol {

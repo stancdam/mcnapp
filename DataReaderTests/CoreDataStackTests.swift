@@ -19,10 +19,11 @@ class CoreDataStackTest: XCTestCase {
         super.setUp()
         
         coreDataStack = CoreDataStack()
+        
         tableView = UITableView()
-        tableView.register(UITableViewCell.self,
-                      forCellReuseIdentifier: "Cell")
+        tableView.register(UITableViewCell.self,forCellReuseIdentifier: "Cell")
         tableView.dataSource = coreDataStack
+        
         coreDataStack.tableView = tableView
         coreDataStack.persistentContainer = mockPersistantContainer
     }
@@ -44,9 +45,7 @@ class CoreDataStackTest: XCTestCase {
     
     func test_saveInCoreDataWith_1elementArray() {
         
-        let data = "[\"DataText1\"]".data(using: String.Encoding.utf8)!
-        
-        coreDataStack.saveInCoreDataWith(data: data)
+        coreDataStack.saveInCoreDataWith(data: Data.from("[\"DataText1\"]"))
         
         XCTAssertEqual(numberOfItemsInPersistentStore(), 1)
     }
@@ -58,54 +57,80 @@ class CoreDataStackTest: XCTestCase {
         XCTAssertEqual(numberOfItemsInPersistentStore(), 0)
     }
 
+    func test_saveInCoreDataWith_1elementData() {
+        
+        coreDataStack.saveInCoreDataWith(data: Data.from("[\"DataText1\"]"))
+        
+        XCTAssertEqual(numberOfItemsInPersistentStore(), 1)
+    }
     
-    func test_saveInCoreDataWith_2elementArray() {
+    func test_saveInCoreDataWith_2elementData() {
         
-        let data = "[\"DataText1\",\"DataText2\"]".data(using: String.Encoding.utf8)!
-        
-        coreDataStack.saveInCoreDataWith(data: data)
+        coreDataStack.saveInCoreDataWith(data: Data.from("[\"DataText1\",\"DataText2\"]"))
         
         XCTAssertEqual(numberOfItemsInPersistentStore(), 2)
     }
     
-    func test_getNumberOfObjects_shouldReturnOne() {
+    func test_getNumberOfObjects_withNoObjectsInCoreData_shouldReturnZero() {
         
-        let data = "[\"DataText1\"]".data(using: String.Encoding.utf8)!
+        coreDataStack.fetchData()
         
-        coreDataStack.saveInCoreDataWith(data: data)
+        XCTAssertEqual(coreDataStack.getNumberOfObjects(), 0)
+    }
+    
+    func test_getNumberOfObjects_withOneObjectInCoreData_shouldReturnOne() {
+        
+        coreDataStack.saveInCoreDataWith(data: Data.from("[\"DataText1\"]"))
         coreDataStack.fetchData()
         
         XCTAssertEqual(coreDataStack.getNumberOfObjects(), 1)
     }
     
-    func test_clearData() {
+    func test_fetchData_shouldPerformFetch() {
         
-        let data = "[\"DataText1\",\"DataText2\"]".data(using: String.Encoding.utf8)!
+        coreDataStack.saveInCoreDataWith(data: Data.from("[\"DataText1\"]"))
         
-        coreDataStack.saveInCoreDataWith(data: data)
+        XCTAssertTrue(coreDataStack.getNumberOfObjects() != numberOfItemsInPersistentStore(), "Before fetch number of objects in fetchResultControler and persistentStore should differ")
+        
+        coreDataStack.fetchData()
+        
+        XCTAssertTrue(coreDataStack.getNumberOfObjects() == numberOfItemsInPersistentStore(), "After fetch number of objects in fetchResultControler and persistentStore should be equal")
+    }
+    
+    func test_clearData_shouldClearCoreDataStack() {
+        
+        coreDataStack.saveInCoreDataWith(data: Data.from("[\"DataText1\"]"))
         
         coreDataStack.clearData()
         
         XCTAssertEqual(numberOfItemsInPersistentStore(), 0)
     }
     
-    func test_cell() {
-        
-        let data = "[\"DataText1\",\"DataText2\"]".data(using: String.Encoding.utf8)!
-        
-        coreDataStack.saveInCoreDataWith(data: data)
+    func test_numberOfRowsInSection_withNoDataInTableView_shouldReturnZero() {
         
         coreDataStack.fetchData()
-        
         let num = coreDataStack.tableView(tableView, numberOfRowsInSection: 0)
+        
+        XCTAssertEqual(num, 0)
+    }
+    
+    func test_numberOfRowsInSection_withDataInTableView_shouldReturnRows() {
+        
+        coreDataStack.saveInCoreDataWith(data: Data.from("[\"DataText1\"]"))
+        coreDataStack.fetchData()
+        let num = coreDataStack.tableView(tableView, numberOfRowsInSection: 0)
+        
+        XCTAssertEqual(num, 1)
+    }
+    
+    func test_cellForRowAt_shouldReturnCell() {
+        
+        coreDataStack.saveInCoreDataWith(data: Data.from("[\"DataText1\"]"))
+        coreDataStack.fetchData()
         
         let cell = coreDataStack.tableView(tableView, cellForRowAt: IndexPath(row: 0, section: 0))
         
-        XCTAssertEqual(num, 2)
-        
-//
-//        XCTAssertNotNil(cell, "DataText not created")
-        
+        XCTAssertNotNil(cell, "DataText not created")
     }
     
     //MARK: mock in-memory persistant store
@@ -146,5 +171,11 @@ class CoreDataStackTest: XCTestCase {
         let request: NSFetchRequest<NSFetchRequestResult> = NSFetchRequest(entityName: "DataText")
         let results = try! mockPersistantContainer.viewContext.fetch(request)
         return results.count
+    }
+}
+
+extension Data {
+    static func from(_ string: String) -> Data {
+        return string.data(using: String.Encoding.utf8)!
     }
 }
