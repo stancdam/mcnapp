@@ -29,8 +29,6 @@ class CoreDataStackTest: XCTestCase {
     }
     
     override func tearDown() {
-        NotificationCenter.default.removeObserver(self)
-        
         flushData()
         
         super.tearDown()
