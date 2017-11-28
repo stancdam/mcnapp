@@ -67,6 +67,19 @@ class ViewControllerTest: XCTestCase {
 
         XCTAssertTrue(coreDataStack.fetchDataWasCalled, "ViewWillAppear should trigger fetchData")
     }
+    
+    func test_motionShake() {
+        
+        let apiService = APIServiceMock(data: nil, error: nil)
+        let coreDataStack = CoreDataStackMock()
+        viewController.coreDataStack = coreDataStack
+        viewController.apiService = apiService
+        
+        let _ = viewController.view
+        viewController.motionEnded(UIEventSubtype.motionShake, with: nil)
+        
+        XCTAssertTrue(coreDataStack.clearDataWasCalled, "ClearData should be called")
+    }
 
     func test_updateTable_noDataInCoreData_requestDataShouldBeCalled_dataInResponse() {
 
@@ -92,16 +105,6 @@ class ViewControllerTest: XCTestCase {
 
         XCTAssertTrue(!viewController.activitiIndicator.isAnimating, "ActiveIndicator should be stopped")
     }
-    
-    func test_motionShake() {
-        let apiService = APIServiceMock(data: nil, error: nil)
-        let coreDataStack = CoreDataStackMock()
-        viewController.coreDataStack = coreDataStack
-        viewController.apiService = apiService
-        
-        let _ = viewController.view
-        viewController.motionEnded(UIEventSubtype.motionShake, with: nil)
-    }
 }
 
 class APIServiceMock: APIServiceProtocol {
@@ -120,7 +123,6 @@ class APIServiceMock: APIServiceProtocol {
 }
 
 class CoreDataStackMock: NSObject, CoreDataStackProtocol {
-    func saveInCoreDataWith(data: Data?) { saveInCoreDataWithArrayWasCalled = true }
     
     var managedObjectContext: NSManagedObjectContext?
     weak var tableView: UITableView!
@@ -132,6 +134,8 @@ class CoreDataStackMock: NSObject, CoreDataStackProtocol {
     func getNumberOfObjects() -> Int { return numberOfObjects }
     func fetchData() { fetchDataWasCalled = true }
     func clearData() { clearDataWasCalled = true }
+    func saveInCoreDataWith(data: Data?) { saveInCoreDataWithArrayWasCalled = true }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int { return 1 }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell { return UITableViewCell() }
 }
