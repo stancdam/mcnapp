@@ -22,15 +22,13 @@ protocol URLSessionDataTaskProtocol {
 protocol URLSessionProtocol {
     typealias DataTaskResult = (Data?, URLResponse?, Error?) -> Void
     
-    func dataTask(with url: URL,
-                  completionHandler: @escaping DataTaskResult) -> URLSessionDataTaskProtocol
+    func dataTask(with url: URL, completionHandler: @escaping DataTaskResult) -> URLSessionDataTaskProtocol
 }
 
 extension URLSessionDataTask: URLSessionDataTaskProtocol { }
 
 extension URLSession: URLSessionProtocol {
-    func dataTask(with url: URL,
-                  completionHandler: @escaping DataTaskResult) -> URLSessionDataTaskProtocol {
+    func dataTask(with url: URL, completionHandler: @escaping DataTaskResult) -> URLSessionDataTaskProtocol {
         
         return (dataTask(with: url, completionHandler: completionHandler) as URLSessionDataTask) as URLSessionDataTaskProtocol
     }
@@ -47,9 +45,9 @@ class APIService: APIServiceProtocol {
     func requestData(url: URL, callback: @escaping completeClosure)  {
         self.session.dataTask(with: url) { (data, response, error) in
             if let _ = error {
-                callback(nil, DataManagerError.unknown)
+                callback(nil, nil, DataManagerError.unknown)
             } else {
-                callback(data, nil)
+                callback(data, nil, nil)
             }
         }.resume()
     }

@@ -27,7 +27,7 @@ class APIServiceTest: XCTestCase {
         
         var actualData: Data?
         
-        apiService.requestData(url: url) { (data, error) -> Void in
+        apiService.requestData(url: url) { (data, response, error) -> Void in
             actualData = data
         }
         
@@ -48,7 +48,7 @@ class APIServiceTest: XCTestCase {
         
         var actualError: Error?
         
-        apiService.requestData(url: url) { (data, error) -> Void in
+        apiService.requestData(url: url) { (data, response, error) -> Void in
             actualError = error
         }
         

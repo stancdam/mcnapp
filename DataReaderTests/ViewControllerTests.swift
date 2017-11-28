@@ -115,7 +115,7 @@ class ViewControllerTest: XCTestCase {
 class APIServiceMock: APIServiceProtocol {
     func requestData(url: URL, callback: @escaping APIServiceProtocol.completeClosure) {
         requestDataGotCalled = true
-        callback(self.data, nil)
+        callback(self.data, nil, nil)
     }
     
     var requestDataGotCalled = false

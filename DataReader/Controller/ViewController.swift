@@ -24,7 +24,6 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        assert(coreDataStack != nil, "dataProvider is not allowed to be nil at this point")
         tableView.dataSource = coreDataStack
         coreDataStack.tableView = tableView
         tableView.tableFooterView = UIView()
@@ -55,7 +54,7 @@ class ViewController: UIViewController {
             let jsonUrlString = "https://private-5e934f-datatextapi.apiary-mock.com/data"
             guard let url = URL(string: jsonUrlString) else { return }
             
-            self.apiService.requestData(url: url) { [unowned self] (data, error) -> Void in
+            self.apiService.requestData(url: url) { [unowned self] (data, response, error) -> Void in
                 guard let data = data else { return }
                 DispatchQueue.main.async {
                     self.coreDataStack.saveInCoreDataWith(data: data)
