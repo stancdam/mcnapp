@@ -47,7 +47,7 @@ class ViewControllerTest: XCTestCase {
 
     func test_updateTable_noDataInCoreData_requestDataShouldBeCalled_emptyResponse() {
 
-        let apiService = APIServiceMock(data: nil, error: nil)
+        let apiService = APIServiceMock()
         viewController.coreDataStack = CoreDataStackMock()
         viewController.apiService = apiService
 
@@ -70,7 +70,7 @@ class ViewControllerTest: XCTestCase {
     
     func test_motionShake() {
         
-        let apiService = APIServiceMock(data: nil, error: nil)
+        let apiService = APIServiceMock()
         let coreDataStack = CoreDataStackMock()
         viewController.coreDataStack = coreDataStack
         viewController.apiService = apiService
@@ -83,7 +83,8 @@ class ViewControllerTest: XCTestCase {
 
     func test_updateTable_noDataInCoreData_requestDataShouldBeCalled_dataInResponse() {
 
-        let apiService = APIServiceMock(data: nil, error: nil)
+        let data = "{}".data(using: String.Encoding.utf8)
+        let apiService = APIServiceMock(data: data)
         let coreDataStack = CoreDataStackMock()
         viewController.coreDataStack = coreDataStack
         viewController.apiService = apiService
@@ -91,7 +92,11 @@ class ViewControllerTest: XCTestCase {
         let _ = viewController.view
         viewController.updateTable()
 
-        XCTAssertTrue(coreDataStack.fetchDataWasCalled, "RequestData from apiService should be called and data should be saved")
+        DispatchQueue.main.async {
+
+        XCTAssertTrue(coreDataStack.saveInCoreDataWithArrayWasCalled, "RequestData from apiService should be called and data should be saved")
+    
+        }
     }
 
     func test_updateTable_dataInCoreData_activitiIndicatorStopAnimationShouldBeCalled() {
@@ -110,13 +115,14 @@ class ViewControllerTest: XCTestCase {
 class APIServiceMock: APIServiceProtocol {
     func requestData(url: URL, callback: @escaping APIServiceProtocol.completeClosure) {
         requestDataGotCalled = true
+        callback(self.data, nil)
     }
     
     var requestDataGotCalled = false
-    var data: [String]?
+    var data: Data?
     var error: DataManagerError?
     
-    init(data: [String]?, error: DataManagerError?) {
+    init(data: Data? = nil, error: DataManagerError? = nil) {
         self.data = data
         self.error = error
     }
