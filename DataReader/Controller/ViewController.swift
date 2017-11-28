@@ -41,20 +41,9 @@ class ViewController: UIViewController {
     override func motionEnded(_ motion: UIEventSubtype, with event: UIEvent?) {
         if motion == .motionShake {
             coreDataStack.clearData()
-            self.activitiIndicator.isHidden = false
-            let jsonUrlString = "https://private-5e934f-datatextapi.apiary-mock.com/data"
-            guard let url = URL(string: jsonUrlString) else { return }
-
-            self.apiService.requestData(url: url) { (data, error) -> Void in
-                guard let data = data else { return }
-                DispatchQueue.main.async {
-                    self.coreDataStack.saveInCoreDataWith(data: data)
-                    self.activitiIndicator.stopAnimating()
-                }
-            }
+            updateTable()
         }
     }
-    
     
     // MARK: - Table View support
     
@@ -66,7 +55,7 @@ class ViewController: UIViewController {
             let jsonUrlString = "https://private-5e934f-datatextapi.apiary-mock.com/data"
             guard let url = URL(string: jsonUrlString) else { return }
             
-            self.apiService.requestData(url: url) { (data, error) -> Void in
+            self.apiService.requestData(url: url) { [unowned self] (data, error) -> Void in
                 guard let data = data else { return }
                 DispatchQueue.main.async {
                     self.coreDataStack.saveInCoreDataWith(data: data)
