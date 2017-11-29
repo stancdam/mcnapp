@@ -9,7 +9,6 @@
 import Foundation
 
 protocol APIServiceProtocol {
-    
     typealias completeClosure = ( _ data: Data?, _ response: URLResponse?, _ error: Error?)->Void
     
     func requestData(url: URL, callback: @escaping completeClosure)

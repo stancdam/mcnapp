@@ -10,8 +10,37 @@ import Foundation
 
 enum DataManagerError: Error {
     case unknown
-    case invalidJson
+    case invalidHttpResponse
 }
+
+class APIService: APIServiceProtocol {
+    
+    private let session: URLSessionProtocol!
+    
+    init(session: URLSessionProtocol = URLSession.shared ) {
+        self.session = session
+    }
+    
+    func requestData(url: URL, callback: @escaping completeClosure)  {
+        self.session.dataTask(with: url) { (data, response, error) in
+            
+            guard let httpResponse = response as? HTTPURLResponse, let receivedData = data else {
+                    callback(nil, nil, DataManagerError.invalidHttpResponse)
+                    return
+            }
+            switch(httpResponse.statusCode) {
+            case 200:
+                callback(receivedData, nil, nil)
+            default:
+                callback(nil, response, DataManagerError.unknown)
+            }
+
+        }.resume()
+    }
+}
+
+// protocols and extensions below are necessary to create mock and assert the behaviour
+// with code below we are able to emulate network behaviour without access to the real network
 
 typealias DataTaskResult = (Data?, URLResponse?, Error?) -> Void
 
@@ -31,24 +60,5 @@ extension URLSession: URLSessionProtocol {
     func dataTask(with url: URL, completionHandler: @escaping DataTaskResult) -> URLSessionDataTaskProtocol {
         
         return (dataTask(with: url, completionHandler: completionHandler) as URLSessionDataTask) as URLSessionDataTaskProtocol
-    }
-}
-
-class APIService: APIServiceProtocol {
-    
-    private let session: URLSessionProtocol!
-    
-    init(session: URLSessionProtocol = URLSession.shared ) {
-        self.session = session
-    }
-    
-    func requestData(url: URL, callback: @escaping completeClosure)  {
-        self.session.dataTask(with: url) { (data, response, error) in
-            if let _ = error {
-                callback(nil, nil, DataManagerError.unknown)
-            } else {
-                callback(data, nil, nil)
-            }
-        }.resume()
     }
 }

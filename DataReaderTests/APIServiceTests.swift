@@ -15,15 +15,17 @@ class APIServiceTest: XCTestCase {
     func test_requestData_withResponseData_returnsData() {
         
         let session = MockURLSession()
+        let dataTask = MockURLSessionDataTask()
         
         let expectedData = "{}".data(using: String.Encoding.utf8)
         session.nextData = expectedData
-        
-        let dataTask = MockURLSessionDataTask()
-        
         session.nextDataTask = dataTask
+        
         let apiService = APIService(session: session)
         let url = URL(string: "http://testurl.com")!
+        
+        let response = HTTPURLResponse(url: url, statusCode: 200, httpVersion: nil, headerFields: nil)
+        session.nextResponse = response
         
         var actualData: Data?
         
@@ -34,15 +36,38 @@ class APIServiceTest: XCTestCase {
         XCTAssertEqual(actualData, expectedData)
     }
     
+    func test_requestData_withResponseDataWithInvalidStatucCode_returnsError() {
+        
+        let session = MockURLSession()
+        let dataTask = MockURLSessionDataTask()
+        
+        let expectedData = "{}".data(using: String.Encoding.utf8)
+        session.nextData = expectedData
+        session.nextDataTask = dataTask
+        
+        let apiService = APIService(session: session)
+        let url = URL(string: "http://testurl.com")!
+        
+        let response = HTTPURLResponse(url: url, statusCode: 400, httpVersion: nil, headerFields: nil)
+        session.nextResponse = response
+        
+        var actualError: Error?
+        
+        apiService.requestData(url: url) { (data, response, error) -> Void in
+            actualError = error
+        }
+        
+        XCTAssertNotNil(actualError)
+    }
+    
     func test_requestData_withResponseData_returnsError() {
         
         let session = MockURLSession()
-        
-        session.nextError = DataManagerError.unknown
-        
         let dataTask = MockURLSessionDataTask()
         
+        session.nextError = DataManagerError.unknown
         session.nextDataTask = dataTask
+        
         let apiService = APIService(session: session)
         let url = URL(string: "http://testurl.com")!
         
@@ -67,6 +92,7 @@ class MockURLSessionDataTask: URLSessionDataTaskProtocol {
 class MockURLSession: URLSessionProtocol {
     var nextData: Data?
     var nextError: Error?
+    var nextResponse: HTTPURLResponse?
     
     var nextDataTask = MockURLSessionDataTask()
     private (set) var lastURL: URL?
@@ -75,7 +101,7 @@ class MockURLSession: URLSessionProtocol {
                   completionHandler: @escaping DataTaskResult) -> URLSessionDataTaskProtocol
     {
         lastURL = url
-        completionHandler(nextData, nil, nextError)
+        completionHandler(nextData, nextResponse, nextError)
         return nextDataTask
     }
 }
