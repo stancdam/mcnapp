@@ -16,7 +16,7 @@ class ViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var activitiIndicator: UIActivityIndicatorView!
     
-    var apiService: APIServiceProtocol! = APIService()
+    var apiService: APIService! = APIService()
     var coreDataStack: CoreDataStackProtocol! = CoreDataStack()
     
     // MARK: - View related

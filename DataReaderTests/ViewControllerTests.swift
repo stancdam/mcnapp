@@ -13,10 +13,12 @@ import XCTest
 class ViewControllerTest: XCTestCase {
     
     var viewController: ViewController!
+    var coreDataStackMock = CoreDataStackMock()
     
     override func setUp() {
         super.setUp()
         viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ViewController") as! ViewController
+        viewController.coreDataStack = coreDataStackMock
         let _ = viewController.view
     }
     
@@ -32,47 +34,41 @@ class ViewControllerTest: XCTestCase {
         XCTAssertTrue(viewController.tableView.tableFooterView != nil, "TableFooterView should be set")
     }
 
-    func test_updateTable_noDataInCoreData_requestDataShouldBeCalled_emptyResponse() {
-        let apiService = APIServiceMock()
-        viewController.coreDataStack = CoreDataStackMock()
-        viewController.apiService = apiService
-
-        viewController.updateTable()
-
-        XCTAssertTrue(apiService.requestDataGotCalled, "RequestData from apiService should be called")
-    }
-
     func test_viewWillAppear_fetchDataShouldBeCalled() {
-        let coreDataStack = CoreDataStackMock()
-        viewController.coreDataStack = coreDataStack
-
         viewController.viewWillAppear(false)
 
-        XCTAssertTrue(coreDataStack.fetchDataWasCalled, "ViewWillAppear should trigger fetchData")
+        XCTAssertTrue(coreDataStackMock.fetchDataWasCalled, "ViewWillAppear should trigger fetchData")
     }
     
     func test_motionShake() {
-        let apiService = APIServiceMock()
-        let coreDataStack = CoreDataStackMock()
-        viewController.coreDataStack = coreDataStack
-        viewController.apiService = apiService
-        
         viewController.motionEnded(UIEventSubtype.motionShake, with: nil)
         
-        XCTAssertTrue(coreDataStack.clearDataWasCalled, "ClearData should be called")
+        XCTAssertTrue(coreDataStackMock.clearDataWasCalled, "ClearData should be called")
     }
 
+    func test_updateTable_noDataInCoreData_requestDataShouldBeCalled_emptyResponse() {
+        let session = MockURLSession()
+        let dataTask = MockURLSessionDataTask()
+        session.nextDataTask = dataTask
+        viewController.apiService = APIService(session: session)
+        
+        viewController.updateTable()
+        
+        XCTAssertTrue(dataTask.resumeWasCalled, "RequestData from apiService should be called")
+    }
+    
     func test_updateTable_noDataInCoreData_requestDataShouldBeCalled_dataInResponse() {
-        let data = "{}".data(using: String.Encoding.utf8)
-        let apiService = APIServiceMock(data: data)
-        let coreDataStack = CoreDataStackMock()
-        viewController.coreDataStack = coreDataStack
-        viewController.apiService = apiService
+        let session = MockURLSession()
+        let dataTask = MockURLSessionDataTask()
+        session.nextData = "{}".data(using: String.Encoding.utf8)
+        session.nextDataTask = dataTask
+        session.nextResponse = HTTPURLResponse(url: URL(string: "http://testurl.com")!, statusCode: 200, httpVersion: nil, headerFields: nil)
+        viewController.apiService = APIService(session: session)
 
         viewController.updateTable()
 
         DispatchQueue.main.async {
-            XCTAssertTrue(coreDataStack.saveInCoreDataWithArrayWasCalled, "RequestData from apiService should be called and data should be saved")
+            XCTAssertTrue(self.coreDataStackMock.saveInCoreDataWithArrayWasCalled, "RequestData from apiService should be called and data should be saved")
         }
     }
 
@@ -84,22 +80,6 @@ class ViewControllerTest: XCTestCase {
         viewController.updateTable()
 
         XCTAssertTrue(!viewController.activitiIndicator.isAnimating, "ActiveIndicator should be stopped")
-    }
-}
-
-class APIServiceMock: APIServiceProtocol {
-    func requestData(url: URL, callback: @escaping APIServiceProtocol.completeClosure) {
-        requestDataGotCalled = true
-        callback(self.data, nil, nil)
-    }
-    
-    var requestDataGotCalled = false
-    var data: Data?
-    var error: DataManagerError?
-    
-    init(data: Data? = nil, error: DataManagerError? = nil) {
-        self.data = data
-        self.error = error
     }
 }
 

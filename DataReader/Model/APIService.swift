@@ -13,7 +13,9 @@ enum DataManagerError: Error {
     case invalidHttpResponse
 }
 
-class APIService: APIServiceProtocol {
+class APIService {
+    
+    typealias completeClosure = ( _ data: Data?, _ response: URLResponse?, _ error: Error?)->Void
     
     private let session: URLSessionProtocol!
     
