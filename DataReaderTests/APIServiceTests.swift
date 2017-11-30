@@ -11,72 +11,53 @@ import XCTest
 @testable import DataReader
 
 class APIServiceTest: XCTestCase {
+    
+    var apiService: APIService!
+    var session: MockURLSession!
+    let url = URL(string: "http://testurl.com")!
+    
+    
+    override func setUp() {
+        super.setUp()
+        
+        session = MockURLSession()
+        apiService = APIService(session: session)
+        
+    }
         
     func test_requestData_withResponseData_returnsData() {
-        
-        let session = MockURLSession()
-        let dataTask = MockURLSessionDataTask()
-        
         let expectedData = "{}".data(using: String.Encoding.utf8)
         session.nextData = expectedData
-        session.nextDataTask = dataTask
-        
-        let apiService = APIService(session: session)
-        let url = URL(string: "http://testurl.com")!
-        
-        let response = HTTPURLResponse(url: url, statusCode: 200, httpVersion: nil, headerFields: nil)
-        session.nextResponse = response
-        
+        session.nextResponse = HTTPURLResponse(url: url, statusCode: 200, httpVersion: nil, headerFields: nil)
         var actualData: Data?
         
         apiService.requestData(url: url) { (data, response, error) -> Void in
             actualData = data
         }
-        
+
         XCTAssertEqual(actualData, expectedData)
     }
     
     func test_requestData_withResponseDataWithInvalidStatucCode_returnsError() {
-        
-        let session = MockURLSession()
-        let dataTask = MockURLSessionDataTask()
-        
-        let expectedData = "{}".data(using: String.Encoding.utf8)
-        session.nextData = expectedData
-        session.nextDataTask = dataTask
-        
-        let apiService = APIService(session: session)
-        let url = URL(string: "http://testurl.com")!
-        
-        let response = HTTPURLResponse(url: url, statusCode: 400, httpVersion: nil, headerFields: nil)
-        session.nextResponse = response
-        
+        session.nextData = "{}".data(using: String.Encoding.utf8)
+        session.nextResponse = HTTPURLResponse(url: url, statusCode: 400, httpVersion: nil, headerFields: nil)
         var actualError: Error?
-        
+
         apiService.requestData(url: url) { (data, response, error) -> Void in
             actualError = error
         }
-        
+
         XCTAssertNotNil(actualError)
     }
     
     func test_requestData_withResponseData_returnsError() {
-        
-        let session = MockURLSession()
-        let dataTask = MockURLSessionDataTask()
-        
         session.nextError = DataManagerError.unknown
-        session.nextDataTask = dataTask
-        
-        let apiService = APIService(session: session)
-        let url = URL(string: "http://testurl.com")!
-        
         var actualError: Error?
-        
+
         apiService.requestData(url: url) { (data, response, error) -> Void in
             actualError = error
         }
-        
+
         XCTAssertNotNil(actualError)
     }
 }
