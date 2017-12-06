@@ -1,5 +1,5 @@
 //
-//  FetchManager.swift
+//  APIService.swift
 //  DataReader
 //
 //  Created by Damian Stanczyk on 06.11.2017.
@@ -10,33 +10,59 @@ import Foundation
 
 enum DataManagerError: Error {
     case unknown
-    case invalidJson
-}
-
-protocol FetchManagerDelegate {
-    func requestCompleted(data: [String]?, error: DataManagerError?)
+    case invalidHttpResponse
 }
 
 class APIService {
-    static func requestData(delegate: FetchManagerDelegate)  {
-        
-        let jsonUrlString = "https://private-5e934f-datatextapi.apiary-mock.com/data"
-        guard let url = URL(string: jsonUrlString) else { return }
-        
-        URLSession.shared.dataTask(with: url) { (data, response, err) in
-            // TODO: check err and response status
-            guard let data = data else { return }
-            
-            do {
-                let json = try JSONSerialization.jsonObject(with: data) as? [String]
-                if let stringArray = json {
-                    delegate.requestCompleted(data: stringArray, error: nil)
-                }
-            } catch {
-                delegate.requestCompleted(data: nil, error: .invalidJson)
-            }
-            
-            }.resume()
+    
+    typealias completeClosure = ( _ data: Data?, _ response: URLResponse?, _ error: Error?)->Void
+    
+    private let session: URLSessionProtocol!
+    
+    init(session: URLSessionProtocol = URLSession.shared ) {
+        self.session = session
     }
+    
+    func requestData(url: URL, callback: @escaping completeClosure)  {
+        self.session.dataTask(with: url) { (data, response, error) in
+            
+            guard let httpResponse = response as? HTTPURLResponse, let receivedData = data else {
+                    callback(nil, nil, DataManagerError.invalidHttpResponse)
+                    return
+            }
+            switch(httpResponse.statusCode) {
+            case 200:
+                callback(receivedData, nil, nil)
+            default:
+                callback(nil, response, DataManagerError.unknown)
+            }
 
+        }.resume()
+        
+        
+    }
+}
+
+// protocols and extensions below are necessary to create mock and assert the behaviour
+// with code below we are able to emulate network behaviour without access to the real network
+
+typealias DataTaskResult = (Data?, URLResponse?, Error?) -> Void
+
+protocol URLSessionDataTaskProtocol {
+    func resume()
+}
+
+protocol URLSessionProtocol {
+    typealias DataTaskResult = (Data?, URLResponse?, Error?) -> Void
+    
+    func dataTask(with url: URL, completionHandler: @escaping DataTaskResult) -> URLSessionDataTaskProtocol
+}
+
+extension URLSessionDataTask: URLSessionDataTaskProtocol { }
+
+extension URLSession: URLSessionProtocol {
+    func dataTask(with url: URL, completionHandler: @escaping DataTaskResult) -> URLSessionDataTaskProtocol {
+        
+        return (dataTask(with: url, completionHandler: completionHandler) as URLSessionDataTask) as URLSessionDataTaskProtocol
+    }
 }
